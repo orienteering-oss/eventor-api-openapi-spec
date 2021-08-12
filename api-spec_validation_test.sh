@@ -13,7 +13,7 @@ setUp()
   
 
   
-  echo "Executing tests... ^_^"
+  echo "Executing tests with setup username=$githubUsername projectId=$githubProjectId openApiSpecFile=$openApiSpecFileName ..."
 }
 
 
