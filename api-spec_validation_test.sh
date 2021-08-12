@@ -41,7 +41,7 @@ testOpenApiSpecValidity() {
     echo "OpenAPI Specification File=$validationUrl"
     echo "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"    
 
-    validationOutput=$(curl -L $validationUrl)
+    validationOutput=$(curl -L --silent $validationUrl)
     validationOutputSize=${#validationOutput}
     echo "Testing swagger validation - current output is: $validationOutput"
     echo "Expected valid size: $expectedOutputSize, current output: $validationOutputSize"
