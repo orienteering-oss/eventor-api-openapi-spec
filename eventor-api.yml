@@ -7,8 +7,8 @@ info:
   version: "1.0.0"
   termsOfService: https://eventor.orientering.se/Home/About
   contact:
-    name: mikaello
-    url: https://github.com/mikaello
+    name: Eventor
+    url: https://eventor.orienteering.org/api/documentation
 
 servers:
   - url: https://eventor.orientering.no/api
@@ -31,21 +31,126 @@ security:
   - ApiKeyAuth: []
 
 paths:
+  
+  /events:
+    get:
+      summary: Returns a list with the events matching the search parameters.
+      parameters:
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Start time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: End time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromModifyDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Includes only events that have changed after this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toModifyDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: Includes only events that have changed before this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list of event IDs. Omit to include all events.
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          description: Comma-separated list of organisation IDs for the organising clubs. If a state's organisation ID is specified, all events organised by a club in that state will be included. Omit to include all events.
+        - in: query
+          name: classificationIds
+          schema:
+            type: string
+          description: Comma-separated list of event classification IDs, where 1=championship event, 2=national event, 3=state event, 4=local event, 5=club event. Omit to include all events.
+        - in: query
+          name: includeEntryBreaks
+          schema:
+            type: boolean
+            default: false
+          description: Set to true to include the entry deadlines of the event.
+        - in: query
+          name: includeAttributes
+          schema:
+            type: boolean
+            default: false
+          description: Set to true to include the event's event attributes.
+        - in: query
+          name: parentIds
+          schema:
+            type: string
+          description: If filtering on parent events, comma-separated list of IDs for parent events.
+      responses:
+        "200":
+          description: XML element `EventList`
+          content:
+            application/xml:
+              schema: 
+                type: string # TODO
+
+  /events/documents:
+    get:
+      summary: Returns a list with documents for the events matching the search parameters.
+      parameters:
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Start time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: End time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list of event IDs. Omit to include all events.
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          description: Comma-separated list of organisation IDs for the organising clubs. If a state's organisation ID is specified, all events organised by a club in that state will be included. Omit to include all events.
+      responses:
+        "200":
+          description: XML element `DocumentList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+
   /event/{eventId}:
     get:
       summary: Returns an event.
-      description: A XML `Event` element is returned if found.
       parameters:
         - in: path
           name: eventId
           schema:
             type: integer
           required: true
-          description: ID of the event to get.
+          description: The ID of the event as specified by `/events`.
       responses:
         "200":
-          description: A XML element is returned.
+          description: XML element `Event`
           content:
             application/xml:
               schema:
-                type: string
+                type: string # TODO
