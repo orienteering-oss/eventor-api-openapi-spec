@@ -1,0 +1,45 @@
+openapi: 3.0.0
+
+info:
+  title: Eventor API
+  description: |
+    Eventor API
+  version: "1.0.0"
+  termsOfService: https://eventor.orientering.se/Home/About
+  contact:
+    name: mikaello
+    url: https://github.com/mikaello
+
+servers:
+  - url: https://eventor.orientering.no/api
+    description: Norwegian Eventor API
+  - url: https://eventor.orientering.se/api
+    description: Swedish Eventor API
+  - url: https://eventor.orienteering.asn.au/api
+    description: Australian Eventor API
+  - url: https://eventor.orienteering.org/api
+    description: International Eventor API
+
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      name: ApiKey
+      in: header
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /event/{eventId}:
+    get:
+      summary: Returns an event.
+      description: A XML `Event` element is returned if found.
+      responses:
+        '200':
+          description: A XML element is returned.
+          content:
+            application/xml:
+              schema: 
+                type: string
