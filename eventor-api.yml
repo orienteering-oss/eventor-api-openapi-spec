@@ -20,7 +20,6 @@ servers:
   - url: https://eventor.orienteering.org/api
     description: International Eventor API
 
-
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -36,10 +35,17 @@ paths:
     get:
       summary: Returns an event.
       description: A XML `Event` element is returned if found.
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          required: true
+          description: ID of the event to get.
       responses:
-        '200':
+        "200":
           description: A XML element is returned.
           content:
             application/xml:
-              schema: 
+              schema:
                 type: string
