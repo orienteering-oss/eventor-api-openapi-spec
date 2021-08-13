@@ -81,13 +81,13 @@ paths:
           schema:
             type: boolean
             default: false
-          description: Set to true to include the entry deadlines of the event.
+          description: Set to `true` to include the entry deadlines of the event.
         - in: query
           name: includeAttributes
           schema:
             type: boolean
             default: false
-          description: Set to true to include the event's event attributes.
+          description: Set to `true` to include the event's event attributes.
         - in: query
           name: parentIds
           schema:
@@ -150,6 +150,593 @@ paths:
       responses:
         "200":
           description: XML element `Event`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /eventclasses:
+    get:
+      summary: Returns all classes in an event.
+      parameters:
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the event as specified by `/events`.
+        - in: query
+          name: includeEntryFees
+          schema:
+            type: boolean
+          description: Set to `true` to include IDs and application order for the entry fees of the classes.
+      responses:
+        "200":
+          description: XML element `EventClassList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /entryfees/events/{eventId}:
+    get:
+      summary: Returns all entry fees in an event.
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the event as specified by `/events`.
+      responses:
+        "200":
+          description: XML element `EntryFeeList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /organisation/apiKey:
+    get:
+      summary: Returns the organisation that the specified API key belongs to.
+      responses:
+        "200":
+          description: XML element `Organisation`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /organisations:
+    get:
+      summary: Returns a list with all organisations (federations, state associations and clubs).
+      parameters:
+        - in: query
+          name: includeProperties
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include extended information about the organisations.
+      responses:
+        "200":
+          description: XML element `OrganisationList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /organisation/{id}:
+    get:
+      summary: Returns an organisation (federation, state association or club).
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation.
+      responses:
+        "200":
+          description: XML element `Organisation`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /persons/organisations/{organisationId}:
+    get:
+      summary: Returns all persons that are members of an organisation.
+      parameters:
+        - in: path
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: includeContactDetails
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the members' addresses, phone numbers and email addresses.
+      responses:
+        "200":
+          description: XML element `PersonList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /competitors:
+    get:
+      summary: Returns event settings (punching card numbers, pre-selected classes) for all persons that have specified these settings within an organisation.
+      parameters:
+        - in: query
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+      responses:
+        "200":
+          description: XML element `CompetitorList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /externalLoginUrl:
+    get:
+      summary: Returns a link that can be used to redirect a person from an external website to logged-in mode in Eventor. The link can only be used once and is forfeited after five minutes. Useful when a club has a website solution with its own login system. **Caution!** Make sure to use this method in such a way that only authorized users in the external system will have access to the redirect link!
+      parameters:
+        - in: query
+          name: personId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the person as specified by `/persons/organisations/{organisationId}`. The person must be a member of the organisation specified by organisationId.
+        - in: query
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: includeContactDetails
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the members' addresses, phone numbers and email addresses.
+      responses:
+        "200":
+          description: XML element `ExternalLoginUrl`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /authenticatePerson:
+    get:
+      summary: Returns the person matching the specified user name and password.
+      parameters:
+        - in: header
+          name: Username
+          schema:
+            type: string
+          required: true
+          description: The person's user name i Eventor.
+        - in: header
+          name: Password
+          schema:
+            type: string
+          required: true
+          description: The person's password i Eventor.
+      responses:
+        "200":
+          description: XML element `Person`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /entries:
+    get:
+      summary: Returns persons entered to an event as specified by the search parameters.
+      parameters:
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          description: Comma-separated list with IDs as specified by `/organisations` for the organisation that entries is to be fetched for. Omit to include all organisations.
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list with event IDs as specified by `/events`. Omit to include all events.
+        - in: query
+          name: eventClassIds
+          schema:
+            type: string
+          description: Comma-separated list with class IDs as specified by `/eventclasses`. Omit to include all classes.
+        - in: query
+          name: fromEventDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Gets entries from events organised at this or later times (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toEventDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: Gets entries from events organised at this or earlier times (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromEntryDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Gets entries that are made at this time or later (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toEntryDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: Gets entries that are made at this time or earlier (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromModifyDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Gets entries that have changed at this time or later (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toModifyDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: Gets entries that are changed at this time or earlier (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: includeEntryFees
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include entry fee information.
+        - in: query
+          name: includePersonElement
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include complete person information insted of just a person ID.
+        - in: query
+          name: includeOrganisationElement
+          schema:
+            type: string
+          description: Set to `true` to include complete organisation information insted of just an organisation ID.
+        - in: query
+          name: includeEventElement
+          schema:
+            type: string
+          description: Set to `true` to include complete event information insted of just an event ID.
+      responses:
+        "200":
+          description: XML element `EntryList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /competitorcount:
+    get:
+      summary: Returns the number of entries as given by the search parameters.
+      parameters:
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          required: true
+          description: Comma-separated list with IDs as specified by `/organisations` for the organisation that entries is to be fetched for.
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list with event IDs as specified by `/events`. Omit to include all events.
+        - in: query
+          name: personIds
+          schema:
+            type: string
+          description: Comma-separated list with personIDs as specified by `/persons/organisations/{organisationId}`. The persons must be members in the organisation specified by organisationIds.
+      responses:
+        "200":
+          description: XML element `CompetitorCountList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /starts/event:
+    get:
+      summary: Returns start times for an event.
+      parameters:
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+            example: 8248
+          required: true
+          description: Event ID as specified by `/events`.
+      responses:
+        "200":
+          description: XML element `StartList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /starts/person:
+    get:
+      summary: Returns start times for a person in a number of events.
+      parameters:
+        - in: query
+          name: personId
+          schema:
+            type: integer
+          description: Person ID as specified by `/persons/organisations/{organisationId}`.
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list with event IDs as specified by `/events`. Omit to include all events.
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Includes events organised this or later times (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: Includes events organised this or earlier times (yyyy-mm-dd hh:mm:ss).
+      responses:
+        "200":
+          description: XML element `StartListList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /starts/organisation:
+    get:
+      summary: Returns start times for an organisation's (club's) competitors in an event.
+      parameters:
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          required: true
+          description: Comma-separated list with IDs as specified by `/organisations` for the organisations that start times are to be fetched for. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+          description: The ID of the event as specified by `/events`.
+      responses:
+        "200":
+          description: XML element `StartList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /results/event:
+    get:
+      summary: Returns results for an event.
+      parameters:
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+          description: The ID of the event as specified by `/events`.
+        - in: query
+          name: includeSplitTimes
+          schema:
+            type: boolean
+          description: Set to `true` to include split times.
+        - in: query
+          name: top
+          schema:
+            type: integer
+          description: Only returns this number of competitors from the top of the result list. Omit to include all competitors.
+      responses:
+        "200":
+          description: XML element `ResultList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /results/person:
+    get:
+      summary: Returns results for a person in a number of events.
+      parameters:
+        - in: query
+          name: personId
+          schema:
+            type: integer
+          description: Person ID as specified by `/persons/organisations/{organisationId}`.
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list with event IDs as specified by `/events`. Omit to include all events.
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: 0000-01-01 00:00:00
+          description: Includes events organised this or later times (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: 9999-12-31 23:59:59
+          description: Includes events organised this or earlier times (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: includeSplitTimes
+          schema:
+            type: boolean
+          description: Set to `true` to include split times.
+        - in: query
+          name: top
+          schema:
+            type: integer
+          description: Returns, besides the specified person, only this number of competitors from the top of the result list. Omit to include the specified person only.
+      responses:
+        "200":
+          description: XML element `StartListList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /results/organisation:
+    get:
+      summary: Returns results for an organisation's (club's) competitors in an event.
+      parameters:
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          required: true
+          description: Comma-separated list with IDs as specified by `/organisations` for the organisations that start times are to be fetched for. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+            example: 8248
+          description: The ID of the event as specified by `/events`.
+        - in: query
+          name: includeSplitTimes
+          schema:
+            type: boolean
+          description: Set to `true` to include split times.
+        - in: query
+          name: top
+          schema:
+            type: integer
+          description: Returns, besides the specified organisation's competitors, only this number of competitors from the top of each class' result list. Omit to include the specified organisation's comeptitors only.
+      responses:
+        "200":
+          description: XML element `ResultList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /activities:
+    get:
+      summary: Returns all activities for an organisation (club) in a given period of time.
+      parameters:
+        - in: query
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: from
+          schema:
+            type: string
+            example: 0000-01-01 00:00:00
+          required: true
+          description: The start of the time period (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: to
+          schema:
+            type: string
+            example: 9999-12-31 23:59:59
+          required: true
+          description: The end of the time period (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: includeRegistrations
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include registrastions for the activities.
+      responses:
+        "200":
+          description: XML element `ActivityList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /activity:
+    get:
+      summary: Returns an activity.
+      parameters:
+        - in: query
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the activity as specified by by `/activities`.
+        - in: query
+          name: includeRegistrations
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include registrastions for the activities.
+      responses:
+        "200":
+          description: XML element `Activity`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /competitor/{personId}:
+    get:
+      summary: Returns a person's event settings (e.g. pre-selected classes and punching card numbers).
+      parameters:
+        - in: path
+          name: personId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the person as specified by `/persons/organisations/{organisationId}`. The person must be a member of the organisation whose API key is used.
+      responses:
+        "200":
+          description: XML element `Competitor`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+
+  /competitor:
+    put:
+      summary: Saves a person's event settings (e.g. pre-selected classes and punching card numbers).
+      requestBody:
+        description: The event settings for the person specified as a `Competitor` object. The person must be a member of the organisation whose API key is used.
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: string # TODO
+      responses:
+        "200":
+          description: XML element `Competitor`
           content:
             application/xml:
               schema:
