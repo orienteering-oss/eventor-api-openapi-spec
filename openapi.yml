@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.3
 
 info:
   title: Eventor API
@@ -70,11 +70,13 @@ paths:
           name: organisationIds
           schema:
             type: string
+            example: "273,89"
           description: Comma-separated list of organisation IDs for the organising clubs. If a state's organisation ID is specified, all events organised by a club in that state will be included. Omit to include all events.
         - in: query
           name: classificationIds
           schema:
             type: string
+            example: "4,5"
           description: Comma-separated list of event classification IDs, where 1=championship event, 2=national event, 3=state event, 4=local event, 5=club event. Omit to include all events.
         - in: query
           name: includeEntryBreaks
@@ -92,6 +94,7 @@ paths:
           name: parentIds
           schema:
             type: string
+            example: 1,2
           description: If filtering on parent events, comma-separated list of IDs for parent events.
       responses:
         "200":
@@ -127,6 +130,7 @@ paths:
           name: organisationIds
           schema:
             type: string
+            example: 273,89
           description: Comma-separated list of organisation IDs for the organising clubs. If a state's organisation ID is specified, all events organised by a club in that state will be included. Omit to include all events.
       responses:
         "200":
@@ -145,6 +149,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            example: 8248
           required: true
           description: The ID of the event as specified by `/events`.
       responses:
@@ -163,12 +168,14 @@ paths:
           name: eventId
           schema:
             type: integer
+            example: 8248
           required: true
           description: The ID of the event as specified by `/events`.
         - in: query
           name: includeEntryFees
           schema:
             type: boolean
+            example: false
           description: Set to `true` to include IDs and application order for the entry fees of the classes.
       responses:
         "200":
@@ -186,6 +193,7 @@ paths:
           name: eventId
           schema:
             type: integer
+            example: 8248
           required: true
           description: The ID of the event as specified by `/events`.
       responses:
@@ -233,6 +241,7 @@ paths:
           name: id
           schema:
             type: integer
+            example: 273
           required: true
           description: The ID of the organisation.
       responses:
@@ -251,6 +260,7 @@ paths:
           name: organisationId
           schema:
             type: integer
+            example: 273
           required: true
           description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
         - in: query
@@ -275,6 +285,7 @@ paths:
           name: organisationId
           schema:
             type: integer
+            example: 273
           required: true
           description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
       responses:
@@ -293,12 +304,14 @@ paths:
           name: personId
           schema:
             type: integer
+            example: 1
           required: true
           description: The ID of the person as specified by `/persons/organisations/{organisationId}`. The person must be a member of the organisation specified by organisationId.
         - in: query
           name: organisationId
           schema:
             type: integer
+            example: 273
           required: true
           description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
         - in: query
@@ -323,12 +336,14 @@ paths:
           name: Username
           schema:
             type: string
+            example: OlaNordmann
           required: true
           description: The person's user name i Eventor.
         - in: header
           name: Password
           schema:
             type: string
+            example: 0r13nt3r1n5
           required: true
           description: The person's password i Eventor.
       responses:
@@ -347,6 +362,7 @@ paths:
           name: organisationIds
           schema:
             type: string
+            example: 273,89
           description: Comma-separated list with IDs as specified by `/organisations` for the organisation that entries is to be fetched for. Omit to include all organisations.
         - in: query
           name: eventIds
@@ -358,6 +374,7 @@ paths:
           name: eventClassIds
           schema:
             type: string
+            example: "2"
           description: Comma-separated list with class IDs as specified by `/eventclasses`. Omit to include all classes.
         - in: query
           name: fromEventDate
@@ -410,12 +427,14 @@ paths:
         - in: query
           name: includeOrganisationElement
           schema:
-            type: string
+            type: boolean
+            example: false
           description: Set to `true` to include complete organisation information insted of just an organisation ID.
         - in: query
           name: includeEventElement
           schema:
-            type: string
+            type: boolean
+            example: false
           description: Set to `true` to include complete event information insted of just an event ID.
       responses:
         "200":
@@ -433,6 +452,7 @@ paths:
           name: organisationIds
           schema:
             type: string
+            example: 273,89
           required: true
           description: Comma-separated list with IDs as specified by `/organisations` for the organisation that entries is to be fetched for.
         - in: query
@@ -445,6 +465,7 @@ paths:
           name: personIds
           schema:
             type: string
+            example: "1"
           description: Comma-separated list with personIDs as specified by `/persons/organisations/{organisationId}`. The persons must be members in the organisation specified by organisationIds.
       responses:
         "200":
@@ -481,6 +502,7 @@ paths:
           name: personId
           schema:
             type: integer
+            example: 1
           description: Person ID as specified by `/persons/organisations/{organisationId}`.
         - in: query
           name: eventIds
@@ -516,12 +538,14 @@ paths:
           name: organisationIds
           schema:
             type: string
+            example: 273,89
           required: true
           description: Comma-separated list with IDs as specified by `/organisations` for the organisations that start times are to be fetched for. This parameter must be set to the own organisation's ID.
         - in: query
           name: eventId
           schema:
             type: integer
+            example: 8248
           description: The ID of the event as specified by `/events`.
       responses:
         "200":
@@ -539,16 +563,19 @@ paths:
           name: eventId
           schema:
             type: integer
+            example: 8248
           description: The ID of the event as specified by `/events`.
         - in: query
           name: includeSplitTimes
           schema:
             type: boolean
+            example: false
           description: Set to `true` to include split times.
         - in: query
           name: top
           schema:
             type: integer
+            example: 50
           description: Only returns this number of competitors from the top of the result list. Omit to include all competitors.
       responses:
         "200":
@@ -566,6 +593,7 @@ paths:
           name: personId
           schema:
             type: integer
+            example: 1
           description: Person ID as specified by `/persons/organisations/{organisationId}`.
         - in: query
           name: eventIds
@@ -589,11 +617,13 @@ paths:
           name: includeSplitTimes
           schema:
             type: boolean
+            example: false
           description: Set to `true` to include split times.
         - in: query
           name: top
           schema:
             type: integer
+            example: 50
           description: Returns, besides the specified person, only this number of competitors from the top of the result list. Omit to include the specified person only.
       responses:
         "200":
@@ -611,6 +641,7 @@ paths:
           name: organisationIds
           schema:
             type: string
+            example: 273,89
           required: true
           description: Comma-separated list with IDs as specified by `/organisations` for the organisations that start times are to be fetched for. This parameter must be set to the own organisation's ID.
         - in: query
@@ -623,11 +654,13 @@ paths:
           name: includeSplitTimes
           schema:
             type: boolean
+            example: false
           description: Set to `true` to include split times.
         - in: query
           name: top
           schema:
             type: integer
+            example: 50
           description: Returns, besides the specified organisation's competitors, only this number of competitors from the top of each class' result list. Omit to include the specified organisation's comeptitors only.
       responses:
         "200":
@@ -645,13 +678,14 @@ paths:
           name: organisationId
           schema:
             type: integer
+            example: 273
           required: true
           description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
         - in: query
           name: from
           schema:
             type: string
-            example: "0000-01-01 00:00:00"
+            example: "1000-01-01 00:00:00"
           required: true
           description: The start of the time period (yyyy-mm-dd hh:mm:ss).
         - in: query
@@ -683,12 +717,14 @@ paths:
           name: organisationId
           schema:
             type: integer
+            example: 273
           required: true
           description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
         - in: query
           name: id
           schema:
             type: integer
+            example: 1
           required: true
           description: The ID of the activity as specified by by `/activities`.
         - in: query
@@ -713,6 +749,7 @@ paths:
           name: personId
           schema:
             type: integer
+            example: 1
           required: true
           description: The ID of the person as specified by `/persons/organisations/{organisationId}`. The person must be a member of the organisation whose API key is used.
       responses:
