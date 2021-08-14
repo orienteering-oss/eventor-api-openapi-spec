@@ -40,25 +40,25 @@ paths:
           name: fromDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Start time (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: End time (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: fromModifyDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Includes only events that have changed after this time (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toModifyDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: Includes only events that have changed before this time (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: eventIds
@@ -109,13 +109,13 @@ paths:
           name: fromDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Start time (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: End time (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: eventIds
@@ -363,37 +363,37 @@ paths:
           name: fromEventDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Gets entries from events organised at this or later times (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toEventDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: Gets entries from events organised at this or earlier times (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: fromEntryDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Gets entries that are made at this time or later (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toEntryDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: Gets entries that are made at this time or earlier (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: fromModifyDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Gets entries that have changed at this time or later (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toModifyDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: Gets entries that are changed at this time or earlier (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: includeEntryFees
@@ -492,13 +492,13 @@ paths:
           name: fromDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Includes events organised this or later times (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: Includes events organised this or earlier times (yyyy-mm-dd hh:mm:ss).
       responses:
         "200":
@@ -577,13 +577,13 @@ paths:
           name: fromDate
           schema:
             type: string
-            default: 0000-01-01 00:00:00
+            default: "0000-01-01 00:00:00"
           description: Includes events organised this or later times (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: toDate
           schema:
             type: string
-            default: 9999-12-31 23:59:59
+            default: "9999-12-31 23:59:59"
           description: Includes events organised this or earlier times (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: includeSplitTimes
@@ -651,14 +651,14 @@ paths:
           name: from
           schema:
             type: string
-            example: 0000-01-01 00:00:00
+            example: "0000-01-01 00:00:00"
           required: true
           description: The start of the time period (yyyy-mm-dd hh:mm:ss).
         - in: query
           name: to
           schema:
             type: string
-            example: 9999-12-31 23:59:59
+            example: "9999-12-31 23:59:59"
           required: true
           description: The end of the time period (yyyy-mm-dd hh:mm:ss).
         - in: query
