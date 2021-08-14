@@ -9,7 +9,7 @@ setUp()
   githubRawResourceBaseUrl=https://raw.githubusercontent.com
   githubUsername=mikaello
   githubProjectId=eventor-api-openapi-spec
-  openApiSpecFileName=eventor-api.yml
+  openApiSpecFileName=openapi.yml
   
 
   
