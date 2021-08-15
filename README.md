@@ -20,3 +20,9 @@ The different Eventor websites are:
 - [International Eventor](https://eventor.orienteering.org/)
 
 Add `/api/documentation` to either of the URLs to get the documentation for that particular Eventor website (the documentation is also included in the OpenAPI specification).
+
+## See also
+
+- All data returned from the API is specified in IOF XSD v3, see this and JSON version of the same spec in [mikaello/iof-orienteering-data-schemas](https://github.com/mikaello/iof-orienteering-data-schemas)
+- Helper library for converting XML from Eventor to JSON objects: [mikaello/eventor-api-json-types](https://github.com/mikaello/eventor-api-json-types)
+- GraphQL version of the Eventor API: [mikaello/eventor-graphql-api](https://github.com/mikaello/eventor-graphql-api)
