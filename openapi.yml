@@ -781,3 +781,31 @@ paths:
             application/xml:
               schema:
                 type: string # TODO
+              example: |
+                <Competitor>
+                  <Person sex="F">
+                    <Id>1</Id>
+                    <Name>
+                      <Family>Schneider</Family>
+                      <Given>Stefanie</Given>
+                    </Name>
+                    <BirthDate>1986-11-12</BirthDate>
+                    <Nationality code="GER">Germany</Nationality>
+                  </Person>
+                  <Organisation>
+                    <Id>1</Id>
+                    <Name>Super Fast Orienteers</Name>
+                    <Country code="GBR">Great Britain</Country>
+                  </Organisation>
+                  <Organisation>
+                    <Id>2</Id>
+                    <Name>Bushmen OC</Name>
+                    <Country code="GBR">Great Britain</Country>
+                  </Organisation>
+                  <ControlCard punchingSystem="SI">99999</ControlCard>
+                  <ControlCard punchingSystem="Emit">88888</ControlCard>
+                  <Class>
+                    <Id>3</Id>
+                    <Name>Men Open</Name>
+                  </Class>
+                </Competitor>
