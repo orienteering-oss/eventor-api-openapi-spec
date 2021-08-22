@@ -809,3 +809,289 @@ paths:
                     <Name>Men Open</Name>
                   </Class>
                 </Competitor>
+
+  /export/competitors:
+    get:
+      summary: Returns all persons that are members for given organisations
+      parameters:
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+            example: 273,89
+          required: false
+          description: Comma-separated list with IDs as specified by `/organisations` for the organisations that competitors are to be fetched for. Omit to include all competitors.
+        - in: query
+          name: version
+          schema:
+            type: string
+            example: "3.0"
+          required: false
+          description: IOF XSD version, `2.0` or `3.0`
+        - in: query
+          name: includePreselectedClasses
+          schema:
+            type: boolean
+            example: false
+          description: Should preselected classes be included for each competitor.
+        - in: query
+          name: zip
+          schema:
+            type: boolean
+            example: false
+          description: Set to `true` to return a zip file of the result.
+      responses:
+        "200":
+          description: XML element `CompetitorList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /import/startlist:
+    post:
+      summary: Import start list for event
+      parameters: []
+      requestBody:
+        description: XML element `StartList`
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: string # TODO
+      responses:
+        '200':
+          description: XML element `StartList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /import/resultlist:
+    post:
+      summary: Import result list for event
+      parameters: []
+      responses:
+        '200':
+          description: XML element `ImportResultListResult`
+          content:
+            application/xml:
+              schema:
+                type: string
+                example: |
+                  <?xml version="1.0" encoding="utf-8"?>
+                  <ImportResultListResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                    <ResultListUrl>https://eventor.orientering.no/Events/ResultList?eventId=15455&amp;groupBy=EventClass</ResultListUrl>
+                    <SplitTimeListUrl>http://obasen.orientering.se/winsplits/online/no/default.asp?page=classes&amp;databaseId=76549</SplitTimeListUrl>
+                  </ImportResultListResult>
+      requestBody:
+        description: XML element `ResultList`
+        required: true
+        content:
+          application/xml:
+            schema:
+              type: string
+              example: |
+                <?xml version="1.0" encoding="UTF-8"?>
+                <ResultList xmlns="http://www.orienteering.org/datastandard/3.0"
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                            iofVersion="3.0"
+                            createTime="2021-08-21T07:46:33+01:00"
+                            creator="Example Software"
+                            status="Complete">
+                  <!--
+                    Result list for an individual event where one of the classes use multiple courses (butterfly-loop style).
+                  -->
+                  <Event>
+                    <Id>15455</Id>
+                    <Name>Liten trening</Name>
+                    <StartTime>
+                      <Date>2021-08-21</Date>
+                      <Time>10:00:00+01:00</Time>
+                    </StartTime>
+                    <EndTime>
+                      <Date>2021-08-21</Date>
+                      <Time>14:00:00+01:00</Time>
+                    </EndTime>
+                  </Event>
+                  <ClassResult>
+                    <Class>
+                      <Id>1</Id>
+                      <Name>Men Elite</Name>
+                    </Class>
+                    <!-- if there are multiple courses per class, a Course element without any id may be included to express the properties of an average pseudo course -->
+                    <Course>
+                      <!-- course length is expressed in meters -->
+                      <Length>4650</Length>
+                      <!-- course climb is expressed in meters; omit the Climb element if the course climb is not known -->
+                      <Climb>160</Climb>
+                    </Course>
+                    <PersonResult>
+                      <Person>
+                        <Id>1</Id>
+                        <Name>
+                          <Family>Wood</Family>
+                          <Given>George</Given>
+                        </Name>
+                      </Person>
+                      <!-- the Organisation element is to be omitted if the competitor does not represent a club -->
+                      <Organisation>
+                        <Id>5</Id>
+                        <Name>OC Back and Forth</Name>
+                        <Country code="GBR">Great Britain</Country>
+                      </Organisation>
+                      <Result>
+                        <BibNumber>101</BibNumber>
+                        <!-- start and finish times are expressed in ISO 8601 format, optionally including time zone information: YYYY-MM-DDThh:mm:ss[.s[s[s]]][((+|-)hh:mm)|Z] -->
+                        <!-- for a detailed specification, see http://www.w3.org/TR/xmlschema-2/#dateTime -->
+                        <StartTime>2021-08-21T15:00:00+01:00</StartTime>
+                        <FinishTime>2021-08-21T15:33:21+01:00</FinishTime>
+                        <!-- times are expressed in seconds, use period as decimal separator for fractions of seconds -->
+                        <Time>2001</Time>
+                        <!-- time behind the winner -->
+                        <TimeBehind>0</TimeBehind>
+                        <!-- the position in the result list -->
+                        <Position>1</Position>
+                        <!-- the result status, see the xml schema file for all status codes -->
+                        <Status>OK</Status>
+                        <!-- the Course element may be used on person result level when not all competitors in the class have been assigned the same course, e.g. when butterfly loops are used -->
+                        <Course>
+                          <Id>1</Id>
+                          <Name>Men Elite-1</Name>
+                          <Length>4650</Length>
+                          <Climb>160</Climb>
+                        </Course>
+                        <!-- split times may be omitted, but if they are present all controls of the course that is assigned to the competitor must be included in the correct order, even if they have not been visited -->
+                        <!-- start and finish punches must not be included; use StartTime and FinishTime of the Result element instead -->
+                        <SplitTime>
+                          <ControlCode>31</ControlCode>
+                          <!-- if the control has been visited but the time is not known (e.g. due to a failing punching unit), omit the Time element -->
+                          <Time>501</Time>
+                        </SplitTime>
+                        <SplitTime>
+                          <ControlCode>32</ControlCode>
+                          <Time>720</Time>
+                        </SplitTime>
+                        <SplitTime>
+                          <ControlCode>31</ControlCode>
+                          <Time>818</Time>
+                        </SplitTime>
+                        <SplitTime>
+                          <ControlCode>33</ControlCode>
+                          <Time>1136</Time>
+                        </SplitTime>
+                        <SplitTime>
+                          <ControlCode>31</ControlCode>
+                          <Time>1593</Time>
+                        </SplitTime>
+                        <ControlCard>794021</ControlCard>
+                        <!-- ordered services and fees related to these; for example rental card fee -->
+                        <!-- this competitor has requested a rental card -->
+                        <ServiceRequest>
+                          <Service>
+                            <Id>1</Id>
+                            <Name>Rental card</Name>
+                          </Service>
+                          <RequestedQuantity>1</RequestedQuantity>
+                          <AssignedFee>
+                            <Fee>
+                              <Id>783</Id>
+                              <Name>Rental card fee</Name>
+                              <Amount currency="EUR">2</Amount>
+                            </Fee>
+                          </AssignedFee>
+                        </ServiceRequest>
+                      </Result>
+                    </PersonResult>
+                    <!-- example of a competitor that has mispunched, in this case running butterfly loops in the wrong order (the course's control code sequence is S-31-33-31-32-31-F, but the competitor punched S-31-32-31-33-31-F) -->
+                    <PersonResult>
+                      <Person>
+                        <Id>2</Id>
+                        <Name>
+                          <Family>Martin</Family>
+                          <Given>Edgar</Given>
+                        </Name>
+                      </Person>
+                      <Organisation>
+                        <Id>2</Id>
+                        <Name>Bushmen OC</Name>
+                        <Country code="GBR">Great Britain</Country>
+                      </Organisation>
+                      <Result>
+                        <BibNumber>102</BibNumber>
+                        <StartTime>2021-08-21T15:03:00+01:00</StartTime>
+                        <!-- the finish time is included even if the competitor has not completed his course -->
+                        <FinishTime>2021-08-21T15:39:42+01:00</FinishTime>
+                        <!-- the time is included even if the competitor has not completed his course -->
+                        <Time>2202</Time>
+                        <Status>MissingPunch</Status>
+                        <Course>
+                          <Id>2</Id>
+                          <Name>Men Elite-2</Name>
+                          <Length>4650</Length>
+                          <Climb>160</Climb>
+                        </Course>
+                        <SplitTime>
+                          <ControlCode>31</ControlCode>
+                          <Time>693</Time>
+                        </SplitTime>
+                        <SplitTime>
+                          <ControlCode>33</ControlCode>
+                          <Time>1581</Time>
+                        </SplitTime>
+                        <SplitTime>
+                          <ControlCode>31</ControlCode>
+                          <Time>1920</Time>
+                        </SplitTime>
+                        <!-- controls that have not been visited (or - as in this case - punched but not in the correct order) must still be included, but with the status attribute set to Missing -->
+                        <SplitTime status="Missing">
+                          <ControlCode>32</ControlCode>
+                        </SplitTime>
+                        <SplitTime status="Missing">
+                          <ControlCode>31</ControlCode>
+                        </SplitTime>
+                        <!-- additional punches that do not belong to the course or are not in the correct order may be expressed using the Additional status -->
+                        <SplitTime status="Additional">
+                          <ControlCode>32</ControlCode>
+                          <Time>966</Time>
+                        </SplitTime>
+                        <SplitTime status="Additional">
+                          <ControlCode>31</ControlCode>
+                          <Time>1379</Time>
+                        </SplitTime>
+                        <ControlCard>299482</ControlCard>
+                      </Result>
+                    </PersonResult>
+                  </ClassResult>
+                  <ClassResult>
+                    <Class>
+                      <Id>2</Id>
+                      <Name>Open</Name>
+                    </Class>
+                    <Course>
+                      <Id>3</Id>
+                      <Name>Open</Name>
+                      <Length>2990</Length>
+                      <Climb>120</Climb>
+                    </Course>
+                    <PersonResult>
+                      <Person>
+                        <Id>3</Id>
+                        <Name>
+                          <Family>Lawson</Family>
+                          <Given>Toni</Given>
+                        </Name>
+                      </Person>
+                      <Organisation>
+                        <Id>6</Id>
+                        <Name>Doubtful Direction</Name>
+                        <Country code="GBR">Great Britain</Country>
+                      </Organisation>
+                      <Result>
+                        <StartTime>2021-08-21T15:15:00+01:00</StartTime>
+                        <Status>DidNotStart</Status>
+                        <ControlCard>973078</ControlCard>
+                      </Result>
+                    </PersonResult>
+                  </ClassResult>
+                </ResultList>
