@@ -629,7 +629,7 @@ paths:
           description: Returns, besides the specified person, only this number of competitors from the top of the result list. Omit to include the specified person only.
       responses:
         "200":
-          description: XML element `StartListList`
+          description: XML element `ResultListList`
           content:
             application/xml:
               schema:
