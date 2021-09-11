@@ -24,5 +24,6 @@ Add `/api/documentation` to either of the URLs to get the documentation for that
 ## See also
 
 - All data returned from the API is specified in IOF XSD v3, see this and JSON version of the same spec in [orienteering-oss/iof-orienteering-data-schemas](https://github.com/orienteering-oss/iof-orienteering-data-schemas)
-- Helper library for converting XML from Eventor to JSON objects: [mikaello/eventor-api-json-types](https://github.com/mikaello/eventor-api-json-types)
+- Java helper library for converting XML from Eventor to JSON objects (and back): [orienteering-oss/iof-xml](https://github.com/orienteering-oss/iof-xml)
+- WIP: JavaScript helper library for converting XML from Eventor to JSON objects: [mikaello/eventor-api-json-types](https://github.com/mikaello/eventor-api-json-types)
 - GraphQL version of the Eventor API: [mikaello/eventor-graphql-api](https://github.com/mikaello/eventor-graphql-api)
