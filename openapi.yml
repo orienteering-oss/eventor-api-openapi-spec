@@ -102,7 +102,13 @@ paths:
           content:
             application/xml:
               schema: 
-                type: string # TODO
+                type: array # TODO
+                xml:
+                  name: EventList
+                  wrapped: true
+                items:
+                  xml:
+                    name: Event
 
   /events/documents:
     get:
@@ -138,7 +144,46 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                type: array
+                xml:
+                  name: DocumentList
+                  wrapped: true
+                items:
+                  xml:
+                    name: Document
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      xml:
+                        attribute: true
+                    referenceId:
+                      type: integer
+                      xml:
+                        attribute: true
+                    name:
+                      type: string
+                      xml:
+                        attribute: true
+                    url:
+                      type: string
+                      format: uri
+                      xml:
+                        attribute: true
+                    type:
+                      type: string
+                      enum:
+                        - Invitation
+                        - Other
+                        - Program
+                      xml:
+                        attribute: true
+                    modifyDate:
+                      type: string
+                      format: date-time
+                      xml:
+                        attribute: true
+                  additionalProperties: false
 
 
   /event/{eventId}:
