@@ -873,7 +873,7 @@ paths:
             type: integer
             example: 1
           required: true
-          description: The person's competitor ID as specified by `/competitors`. Note that this is an internal ID, not the public person ID. The person must be a member of the organisation whose API key is used.
+          description: The person's competitor ID as specified by `/persons/organisations/{organisationId}`. Note that this is an internal ID, not the public person ID. The person must be a member of the organisation whose API key is used.
       responses:
         "200":
           description: XML element `Competitor`
