@@ -1,0 +1,16 @@
+name: Validate OpenAPI spec
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate OpenAPI spec
+        run: npx --yes @redocly/cli@latest lint openapi.yml

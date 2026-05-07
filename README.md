@@ -1,6 +1,6 @@
 # eventor-api-openapi-spec
 
-[![Travis build status](https://app.travis-ci.com/orienteering-oss/eventor-api-openapi-spec.svg?branch=main)](https://travis-ci.com/github/orienteering-oss/eventor-api-openapi-spec)
+[![Validate OpenAPI spec](https://github.com/orienteering-oss/eventor-api-openapi-spec/actions/workflows/validate.yml/badge.svg)](https://github.com/orienteering-oss/eventor-api-openapi-spec/actions/workflows/validate.yml)
 
 OpenAPI spec / Swagger for the Eventor API: [openapi.yml](./openapi.yml).
 
