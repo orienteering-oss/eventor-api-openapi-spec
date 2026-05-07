@@ -535,6 +535,7 @@ paths:
           schema:
             type: integer
             example: 8248
+          required: true
           description: Event ID as specified by `/events`.
       responses:
         "200":
@@ -578,6 +579,7 @@ paths:
           schema:
             type: integer
             example: 1
+          required: true
           description: Person ID as specified by `/persons/organisations/{organisationId}`.
         - in: query
           name: eventIds
@@ -621,6 +623,7 @@ paths:
           schema:
             type: integer
             example: 8248
+          required: true
           description: The ID of the event as specified by `/events`.
       responses:
         "200":
@@ -761,6 +764,7 @@ paths:
           schema:
             type: integer
             example: 8248
+          required: true
           description: The ID of the event as specified by `/events`.
         - in: query
           name: includeSplitTimes
