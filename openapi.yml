@@ -77,7 +77,7 @@ paths:
           schema:
             type: string
             example: "4,5"
-          description: Comma-separated list of event classification IDs, where 1=championship event, 2=national event, 3=state event, 4=local event, 5=club event. Omit to include all events.
+          description: Comma-separated list of event classification IDs, where 1=championship event, 2=national event, 3=state event, 4=local event, 5=club event, 6=international event. Omit to include all events.
         - in: query
           name: includeEntryBreaks
           schema:
@@ -314,6 +314,18 @@ paths:
             type: boolean
             default: false
           description: Set to `true` to include the members' addresses, phone numbers and email addresses.
+        - in: query
+          name: includePersonProperties
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include extended information.
+        - in: query
+          name: includePersonIdentifiers
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include a person's external IDs.
       responses:
         "200":
           description: XML element `PersonList`
@@ -539,6 +551,31 @@ paths:
               schema:
                 type: string # TODO
 
+  /starts/event/iofxml:
+    get:
+      summary: Returns start times in IOF XML 3.0 format for an event.
+      parameters:
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+            example: 8248
+          required: true
+          description: Event ID as specified by `/events`.
+        - in: query
+          name: eventRaceId
+          schema:
+            type: integer
+            example: 1
+          description: Race ID as specified by `/events`.
+      responses:
+        "200":
+          description: IOF XML 3.0 `StartList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
   /starts/person:
     get:
       summary: Returns start times for a person in a number of events.
@@ -627,6 +664,43 @@ paths:
       responses:
         "200":
           description: XML element `ResultList`
+          content:
+            application/xml:
+              schema:
+                type: string # TODO
+
+  /results/event/iofxml:
+    get:
+      summary: Returns results in IOF XML 3.0 format for an event.
+      parameters:
+        - in: query
+          name: eventId
+          schema:
+            type: integer
+            example: 8248
+          required: true
+          description: Event ID as specified by `/events`.
+        - in: query
+          name: eventRaceId
+          schema:
+            type: integer
+            example: 1
+          description: Race ID as specified by `/events`.
+        - in: query
+          name: includeSplitTimes
+          schema:
+            type: boolean
+            example: false
+          description: Set to `true` to include split times.
+        - in: query
+          name: totalResult
+          schema:
+            type: boolean
+            example: false
+          description: Set to `true` to return total results if the event is a multi-race event.
+      responses:
+        "200":
+          description: IOF XML 3.0 `ResultList`
           content:
             application/xml:
               schema:
@@ -789,17 +863,17 @@ paths:
               schema:
                 type: string # TODO
 
-  /competitor/{personId}:
+  /competitor/{competitorId}:
     get:
       summary: Returns a person's event settings (e.g. pre-selected classes and punching card numbers).
       parameters:
         - in: path
-          name: personId
+          name: competitorId
           schema:
             type: integer
             example: 1
           required: true
-          description: The ID of the person as specified by `/persons/organisations/{organisationId}`. The person must be a member of the organisation whose API key is used.
+          description: The person's competitor ID as specified by `/persons/organisations/{organisationId}`. Note that this is an internal ID, not the public person ID. The person must be a member of the organisation whose API key is used.
       responses:
         "200":
           description: XML element `Competitor`
