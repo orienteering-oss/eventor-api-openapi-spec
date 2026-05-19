@@ -4211,6 +4211,113 @@ components:
             attribute: true
       xml:
         name: WrsResultList
+    EventorEventRaceId:
+      type: object
+      description: Eventor's internal ID for a race within an event. Appears inside `<Extensions>` on `Race` elements in IOF XML responses.
+      properties:
+        _text:
+          type: integer
+          description: The race ID.
+        type:
+          type: string
+          example: Eventor
+          xml:
+            attribute: true
+      required:
+        - type
+      xml:
+        name: EventRaceId
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorStartListExists:
+      type: boolean
+      description: Whether a start list has been published for the parent event or race.
+      xml:
+        name: StartListExists
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorResultListExists:
+      type: boolean
+      description: Whether a result list has been published for the parent event or race.
+      xml:
+        name: ResultListExists
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorDiscipline:
+      type: string
+      description: Eventor's discipline classification for the event or race.
+      enum:
+        - Foot
+        - MTB
+        - Ski
+        - Trail
+        - PreO
+      xml:
+        name: Discipline
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorLightCondition:
+      type: string
+      description: Light condition for the race.
+      enum:
+        - Day
+        - Night
+      xml:
+        name: LightCondition
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorAttribute:
+      type: object
+      description: A custom event attribute defined by the Eventor instance (e.g. `Flexoløp`).
+      properties:
+        _text:
+          type: string
+          description: Human-readable attribute name.
+        id:
+          type: integer
+          xml:
+            attribute: true
+      required:
+        - id
+      xml:
+        name: Attribute
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorExtensions:
+      type: object
+      description: |
+        Container for Eventor-specific elements that appear inside `<Extensions>`
+        in IOF XML 3.0 responses. All children use the namespace
+        `http://eventor.orientering.se/iofxmlextensions` (prefix `eventor:`).
+
+        Which children appear depends on the parent IOF element:
+
+        - On `Event`: `StartListExists`, `ResultListExists`, `Discipline`, zero or more `Attribute`.
+        - On `Race`: `EventRaceId`, `StartListExists`, `ResultListExists`, `Discipline`, `LightCondition`.
+
+        These extensions are not part of the public IOF XSD — see the IOF
+        datastandard repository for the IOF-defined part of the response:
+        https://github.com/international-orienteering-federation/datastandard-v3
+      properties:
+        EventRaceId:
+          $ref: '#/components/schemas/EventorEventRaceId'
+        StartListExists:
+          $ref: '#/components/schemas/EventorStartListExists'
+        ResultListExists:
+          $ref: '#/components/schemas/EventorResultListExists'
+        Discipline:
+          $ref: '#/components/schemas/EventorDiscipline'
+        LightCondition:
+          $ref: '#/components/schemas/EventorLightCondition'
+        Attribute:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventorAttribute'
+          xml:
+            name: Attribute
+            wrapped: false
+      xml:
+        name: Extensions
 security:
   - ApiKeyAuth: []
 
@@ -4368,7 +4475,39 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema. Eventor-specific data is in `<Extensions>` elements (namespace `http://eventor.orientering.se/iofxmlextensions`).
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  Eventor-specific data is carried in `<Extensions>` elements
+                  (namespace `http://eventor.orientering.se/iofxmlextensions`,
+                  prefix `eventor:`) — see the `EventorExtensions` component
+                  schema for the supported children and their types.
+                example: |-
+                  <?xml version="1.0" encoding="utf-8"?>
+                  <EventList xmlns:eventor="http://eventor.orientering.se/iofxmlextensions" xmlns="http://www.orienteering.org/datastandard/3.0" iofVersion="3.0">
+                    <Event>
+                      <Id type="Eventor">23514</Id>
+                      <Name>OSI/GeoForm Rankingløp 1</Name>
+                      <Race>
+                        <RaceNumber>1</RaceNumber>
+                        <Discipline>Middle</Discipline>
+                        <Extensions>
+                          <eventor:EventRaceId type="Eventor">24332</eventor:EventRaceId>
+                          <eventor:StartListExists>true</eventor:StartListExists>
+                          <eventor:ResultListExists>true</eventor:ResultListExists>
+                          <eventor:Discipline>Foot</eventor:Discipline>
+                          <eventor:LightCondition>Day</eventor:LightCondition>
+                        </Extensions>
+                      </Race>
+                      <Extensions>
+                        <eventor:StartListExists>true</eventor:StartListExists>
+                        <eventor:ResultListExists>true</eventor:ResultListExists>
+                        <eventor:Discipline>Foot</eventor:Discipline>
+                      </Extensions>
+                    </Event>
+                  </EventList>
 
   /wrsevents:
     get:
@@ -4562,7 +4701,15 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema. Eventor-specific data is in `<Extensions>` elements.
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  Eventor-specific data is carried in `<Extensions>` elements
+                  (namespace `http://eventor.orientering.se/iofxmlextensions`,
+                  prefix `eventor:`) — see the `EventorExtensions` component
+                  schema for the supported children and their types.
 
   /eventclasses:
     get:
@@ -4641,9 +4788,8 @@ paths:
     get:
       summary: Returns all organisations in IOF XML 3.0 format.
       description: |
-        IOF XML 3.0 variant of `/organisations`. Eventor-specific data is
-        carried in `<Extensions>` elements (namespace
-        `http://eventor.orientering.se/iofxmlextensions`).
+        IOF XML 3.0 variant of `/organisations`. In practice the response
+        contains no `<Extensions>` elements — all data fits the IOF schema.
 
         Officially listed on the Australian and International API
         documentation pages, but also works on the Norwegian and Swedish
@@ -4662,7 +4808,10 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema.
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
 
   /organisation/{id}:
     get:
@@ -4961,7 +5110,16 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  The embedded `Event`/`Race` carries Eventor-specific data in
+                  `<Extensions>` elements (namespace
+                  `http://eventor.orientering.se/iofxmlextensions`, prefix
+                  `eventor:`) — see the `EventorExtensions` component schema for
+                  the supported children and their types.
 
   /starts/person:
     get:
@@ -5113,7 +5271,16 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  The embedded `Event`/`Race` carries Eventor-specific data in
+                  `<Extensions>` elements (namespace
+                  `http://eventor.orientering.se/iofxmlextensions`, prefix
+                  `eventor:`) — see the `EventorExtensions` component schema for
+                  the supported children and their types.
 
   /results/person:
     get:

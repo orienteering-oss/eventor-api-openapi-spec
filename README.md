@@ -36,6 +36,8 @@ The endpoints that are not available on every instance are:
 All other endpoints are common to all four instances, including the IOF XML 3.0 variants (`/events/iofxml`, `/event/iofxml/{eventId}`, `/organisations/iofxml`, `/starts/event/iofxml`, `/results/event/iofxml`).
 Note that some of the IOF XML endpoints are not listed on every instance's `/api/documentation` page even though they work — the OpenAPI spec is the more complete reference.
 
+The IOF XML bodies follow the [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3) and are not duplicated in this spec; the Eventor-specific elements that appear inside `<Extensions>` (namespace `http://eventor.orientering.se/iofxmlextensions`) are documented under the `EventorExtensions` component schema.
+
 ## See also
 
 - All data returned from the API is specified in IOF XSD v3, see this and JSON version of the same spec in [orienteering-oss/iof-orienteering-data-schemas](https://github.com/orienteering-oss/iof-orienteering-data-schemas)

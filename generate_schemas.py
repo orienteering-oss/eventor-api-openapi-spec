@@ -18,6 +18,123 @@ import textwrap
 import xmlschema
 from xmlschema import XsdElement, XsdAttribute
 
+EVENTOR_EXTENSIONS_NS = "http://eventor.orientering.se/iofxmlextensions"
+
+# Hand-written schemas for Eventor-specific elements that appear inside
+# `<Extensions>` in IOF XML 3.0 responses. These are not part of the IOF XSD
+# (which lives at https://github.com/international-orienteering-federation/datastandard-v3)
+# so they are documented here. Appended to the generated schemas block so they
+# survive regeneration from schema.xsd.
+EXTRA_SCHEMAS_YAML = """\
+    EventorEventRaceId:
+      type: object
+      description: Eventor's internal ID for a race within an event. Appears inside `<Extensions>` on `Race` elements in IOF XML responses.
+      properties:
+        _text:
+          type: integer
+          description: The race ID.
+        type:
+          type: string
+          example: Eventor
+          xml:
+            attribute: true
+      required:
+        - type
+      xml:
+        name: EventRaceId
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorStartListExists:
+      type: boolean
+      description: Whether a start list has been published for the parent event or race.
+      xml:
+        name: StartListExists
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorResultListExists:
+      type: boolean
+      description: Whether a result list has been published for the parent event or race.
+      xml:
+        name: ResultListExists
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorDiscipline:
+      type: string
+      description: Eventor's discipline classification for the event or race.
+      enum:
+        - Foot
+        - MTB
+        - Ski
+        - Trail
+        - PreO
+      xml:
+        name: Discipline
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorLightCondition:
+      type: string
+      description: Light condition for the race.
+      enum:
+        - Day
+        - Night
+      xml:
+        name: LightCondition
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorAttribute:
+      type: object
+      description: A custom event attribute defined by the Eventor instance (e.g. `Flexoløp`).
+      properties:
+        _text:
+          type: string
+          description: Human-readable attribute name.
+        id:
+          type: integer
+          xml:
+            attribute: true
+      required:
+        - id
+      xml:
+        name: Attribute
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorExtensions:
+      type: object
+      description: |
+        Container for Eventor-specific elements that appear inside `<Extensions>`
+        in IOF XML 3.0 responses. All children use the namespace
+        `http://eventor.orientering.se/iofxmlextensions` (prefix `eventor:`).
+
+        Which children appear depends on the parent IOF element:
+
+        - On `Event`: `StartListExists`, `ResultListExists`, `Discipline`, zero or more `Attribute`.
+        - On `Race`: `EventRaceId`, `StartListExists`, `ResultListExists`, `Discipline`, `LightCondition`.
+
+        These extensions are not part of the public IOF XSD — see the IOF
+        datastandard repository for the IOF-defined part of the response:
+        https://github.com/international-orienteering-federation/datastandard-v3
+      properties:
+        EventRaceId:
+          $ref: '#/components/schemas/EventorEventRaceId'
+        StartListExists:
+          $ref: '#/components/schemas/EventorStartListExists'
+        ResultListExists:
+          $ref: '#/components/schemas/EventorResultListExists'
+        Discipline:
+          $ref: '#/components/schemas/EventorDiscipline'
+        LightCondition:
+          $ref: '#/components/schemas/EventorLightCondition'
+        Attribute:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventorAttribute'
+          xml:
+            name: Attribute
+            wrapped: false
+      xml:
+        name: Extensions
+"""
+
 XSD_TO_OPENAPI_TYPE = {
     "string":       ("string",  None),
     "integer":      ("integer", None),
@@ -225,6 +342,7 @@ def generate_schemas(xsd_path: str = "schema.xsd") -> str:
         lines.append(f"    {name}:")
         lines.append(yaml_body)
 
+    lines.append(EXTRA_SCHEMAS_YAML.rstrip("\n"))
     return "\n".join(lines)
 
 
