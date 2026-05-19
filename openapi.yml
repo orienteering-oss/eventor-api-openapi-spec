@@ -8,7 +8,7 @@ info:
   termsOfService: https://eventor.orientering.se/Home/About
   contact:
     name: Eventor
-    url: https://eventor.orienteering.org/api/documentation
+    url: https://eventor.orienteering.sport/api/documentation
 
 servers:
   - url: https://eventor.orientering.no/api
@@ -17,7 +17,7 @@ servers:
     description: Swedish Eventor API
   - url: https://eventor.orienteering.asn.au/api
     description: Australian Eventor API
-  - url: https://eventor.orienteering.org/api
+  - url: https://eventor.orienteering.sport/api
     description: International Eventor API
 
 components:

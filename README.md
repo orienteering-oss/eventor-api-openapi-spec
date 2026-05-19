@@ -17,9 +17,24 @@ The different Eventor websites are:
 - [Norwegian Eventor](https://eventor.orientering.no/)
 - [Swedish Eventor](https://eventor.orientering.se/)
 - [Australian Eventor](https://eventor.orienteering.asn.au/)
-- [International Eventor](https://eventor.orienteering.org/)
+- [International Eventor](https://eventor.orienteering.sport/) (previously `eventor.orienteering.org`, which still redirects)
 
 Add `/api/documentation` to either of the URLs to get the documentation for that particular Eventor website (the documentation is also included in the OpenAPI specification).
+
+### Differences between Eventor instances
+
+The Eventor instances expose nearly the same API.
+This OpenAPI spec is a superset that documents every endpoint across all four instances.
+The endpoints that are not available on every instance are:
+
+| Endpoint                    | NO  | SE  | AU  | Intl |
+| --------------------------- | :-: | :-: | :-: | :-:  |
+| `GET /memberships`          |  –  |  –  |  ✓  |  –   |
+| `GET /wrsevents`            |  –  |  –  |  –  |  ✓   |
+| `GET /wrsresults/event`     |  –  |  –  |  –  |  ✓   |
+
+All other endpoints are common to all four instances, including the IOF XML 3.0 variants (`/events/iofxml`, `/event/iofxml/{eventId}`, `/organisations/iofxml`, `/starts/event/iofxml`, `/results/event/iofxml`).
+Note that some of the IOF XML endpoints are not listed on every instance's `/api/documentation` page even though they work — the OpenAPI spec is the more complete reference.
 
 ## See also
 
