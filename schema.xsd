@@ -1860,6 +1860,7 @@
             <xs:enumeration value="emiTag" />
             <xs:enumeration value="other" />
             <xs:enumeration value="ToePunch" />
+            <xs:enumeration value="Huichang" />
           </xs:restriction>
         </xs:simpleType>
       </xs:attribute>
