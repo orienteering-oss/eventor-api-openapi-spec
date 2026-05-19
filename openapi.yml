@@ -8,7 +8,7 @@ info:
   termsOfService: https://eventor.orientering.se/Home/About
   contact:
     name: Eventor
-    url: https://eventor.orienteering.org/api/documentation
+    url: https://eventor.orienteering.sport/api/documentation
 
 servers:
   - url: https://eventor.orientering.no/api
@@ -17,7 +17,7 @@ servers:
     description: Swedish Eventor API
   - url: https://eventor.orienteering.asn.au/api
     description: Australian Eventor API
-  - url: https://eventor.orienteering.org/api
+  - url: https://eventor.orienteering.sport/api
     description: International Eventor API
 
 components:
@@ -4211,6 +4211,136 @@ components:
             attribute: true
       xml:
         name: WrsResultList
+    EventorEventRaceId:
+      type: object
+      description: Eventor's internal ID for a race within an event. Appears inside `<Extensions>` on `Race` elements in IOF XML responses.
+      properties:
+        _text:
+          type: integer
+          description: The race ID.
+        type:
+          type: string
+          example: Eventor
+          xml:
+            attribute: true
+      required:
+        - type
+      xml:
+        name: EventRaceId
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorStartListExists:
+      type: boolean
+      description: Whether a start list has been published for the parent event or race.
+      xml:
+        name: StartListExists
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorResultListExists:
+      type: boolean
+      description: Whether a result list has been published for the parent event or race.
+      xml:
+        name: ResultListExists
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorDiscipline:
+      type: string
+      description: |
+        Eventor's discipline classification for the event or race.
+        May appear multiple times on the same parent — the value set lists every
+        discipline the event/race accommodates.
+      enum:
+        - Foot
+        - MountainBike
+        - Ski
+        - Trail
+        - Indoor
+      xml:
+        name: Discipline
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorLightCondition:
+      type: string
+      description: Light condition for the race.
+      enum:
+        - Day
+        - Night
+        - DayAndNight
+      xml:
+        name: LightCondition
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorAttribute:
+      type: object
+      description: |
+        A custom event attribute defined by the Eventor instance. The set of
+        attributes is instance-specific — e.g. the Norwegian Eventor exposes
+        attributes like `Flexoløp`, `Ukas løype` and `Paratilbud`.
+      properties:
+        _text:
+          type: string
+          description: Human-readable attribute name.
+          example: Ukas løype
+        id:
+          type: integer
+          example: 2
+          xml:
+            attribute: true
+      required:
+        - id
+      xml:
+        name: Attribute
+        namespace: http://eventor.orientering.se/iofxmlextensions
+        prefix: eventor
+    EventorExtensions:
+      type: object
+      description: |
+        Container for Eventor-specific elements that appear inside `<Extensions>`
+        in IOF XML 3.0 responses. All children use the namespace
+        `http://eventor.orientering.se/iofxmlextensions` (prefix `eventor:`).
+
+        Which children appear depends on the parent IOF element:
+
+        - On `Event`: `StartListExists`, `ResultListExists`, zero or more
+          `Discipline`, zero or more `Attribute`.
+        - On `Race`: `EventRaceId`, `StartListExists`, `ResultListExists`,
+          zero or more `Discipline`, `LightCondition`.
+
+        `Discipline` is repeatable — an event/race that allows multiple
+        disciplines lists each one as a separate element.
+
+        These extensions are not part of the public IOF XSD — see the IOF
+        datastandard repository for the IOF-defined part of the response:
+        https://github.com/international-orienteering-federation/datastandard-v3
+      properties:
+        EventRaceId:
+          $ref: '#/components/schemas/EventorEventRaceId'
+        StartListExists:
+          $ref: '#/components/schemas/EventorStartListExists'
+        ResultListExists:
+          $ref: '#/components/schemas/EventorResultListExists'
+        Discipline:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventorDiscipline'
+          xml:
+            name: Discipline
+            namespace: http://eventor.orientering.se/iofxmlextensions
+            prefix: eventor
+            wrapped: false
+        LightCondition:
+          $ref: '#/components/schemas/EventorLightCondition'
+        Attribute:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventorAttribute'
+          xml:
+            name: Attribute
+            namespace: http://eventor.orientering.se/iofxmlextensions
+            prefix: eventor
+            wrapped: false
+      xml:
+        name: Extensions
 security:
   - ApiKeyAuth: []
 
@@ -4279,6 +4409,201 @@ paths:
           schema:
             type: string
             example: 1,2
+          description: If filtering on parent events, comma-separated list of IDs for parent events.
+      responses:
+        "200":
+          description: XML element `EventList`
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EventList'
+
+  /events/iofxml:
+    get:
+      summary: Returns events matching the search parameters in IOF XML 3.0 format.
+      description: |
+        Same filtering as `/events`, but the response is in IOF XML 3.0
+        format (with Eventor-specific data carried in `<Extensions>` elements
+        under the `http://eventor.orientering.se/iofxmlextensions` namespace).
+
+        Officially listed on the Australian and International API documentation
+        pages, but also works on the Norwegian and Swedish instances.
+        Note: requesting without any filter (e.g. only `fromDate`/`toDate`)
+        may return an error — supply at least `organisationIds` or `eventIds`.
+      parameters:
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Start time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: End time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromModifyDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Includes only events that have changed after this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toModifyDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: Includes only events that have changed before this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list of event IDs. Omit to include all events.
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+            example: "273,89"
+          description: Comma-separated list of organisation IDs for the organising clubs.
+        - in: query
+          name: classificationIds
+          schema:
+            type: string
+            example: "4,5"
+          description: Comma-separated list of event classification IDs (1=championship, 2=national, 3=state, 4=local, 5=club, 6=international).
+        - in: query
+          name: includeEntryBreaks
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the entry deadlines of the event.
+        - in: query
+          name: includeAttributes
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the event's event attributes.
+        - in: query
+          name: parentIds
+          schema:
+            type: string
+            example: 1,2
+          description: If filtering on parent events, comma-separated list of IDs for parent events.
+      responses:
+        "200":
+          description: IOF XML 3.0 `EventList`
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  Eventor-specific data is carried in `<Extensions>` elements
+                  (namespace `http://eventor.orientering.se/iofxmlextensions`,
+                  prefix `eventor:`) — see the `EventorExtensions` component
+                  schema for the supported children and their types.
+                example: |-
+                  <?xml version="1.0" encoding="utf-8"?>
+                  <EventList xmlns:eventor="http://eventor.orientering.se/iofxmlextensions" xmlns="http://www.orienteering.org/datastandard/3.0" iofVersion="3.0">
+                    <Event>
+                      <Id type="Eventor">23514</Id>
+                      <Name>OSI/GeoForm Rankingløp 1</Name>
+                      <Race>
+                        <RaceNumber>1</RaceNumber>
+                        <Discipline>Ultralong</Discipline>
+                        <Extensions>
+                          <eventor:EventRaceId type="Eventor">24332</eventor:EventRaceId>
+                          <eventor:StartListExists>true</eventor:StartListExists>
+                          <eventor:ResultListExists>true</eventor:ResultListExists>
+                          <eventor:Discipline>Foot</eventor:Discipline>
+                          <eventor:Discipline>MountainBike</eventor:Discipline>
+                          <eventor:Discipline>Ski</eventor:Discipline>
+                          <eventor:Discipline>Trail</eventor:Discipline>
+                          <eventor:Discipline>Indoor</eventor:Discipline>
+                          <eventor:LightCondition>DayAndNight</eventor:LightCondition>
+                        </Extensions>
+                      </Race>
+                      <Extensions>
+                        <eventor:StartListExists>true</eventor:StartListExists>
+                        <eventor:ResultListExists>true</eventor:ResultListExists>
+                        <eventor:Discipline>Foot</eventor:Discipline>
+                        <eventor:Discipline>MountainBike</eventor:Discipline>
+                        <eventor:Discipline>Ski</eventor:Discipline>
+                        <eventor:Discipline>Trail</eventor:Discipline>
+                        <eventor:Discipline>Indoor</eventor:Discipline>
+                        <eventor:Attribute id="2">Ukas løype</eventor:Attribute>
+                        <eventor:Attribute id="3">Paratilbud</eventor:Attribute>
+                      </Extensions>
+                    </Event>
+                  </EventList>
+
+  /wrsevents:
+    get:
+      summary: Returns events that have at least one race linked to a WRS (World Ranking System) event.
+      description: |
+        Only available on the International Eventor instance
+        (`eventor.orienteering.sport`).
+      parameters:
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Start time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: End time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromModifyDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Includes only events that have changed after this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toModifyDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: Includes only events that have changed before this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+          description: Comma-separated list of event IDs.
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          description: Comma-separated list of organising organisation IDs.
+        - in: query
+          name: classificationIds
+          schema:
+            type: string
+          description: Comma-separated list of event classification IDs.
+        - in: query
+          name: includeEntryBreaks
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the entry deadlines of the event.
+        - in: query
+          name: includeAttributes
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the event's event attributes.
+        - in: query
+          name: parentIds
+          schema:
+            type: string
           description: If filtering on parent events, comma-separated list of IDs for parent events.
       responses:
         "200":
@@ -4383,6 +4708,42 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
 
+  /event/iofxml/{eventId}:
+    get:
+      summary: Returns a single event in IOF XML 3.0 format.
+      description: |
+        IOF XML 3.0 variant of `/event/{eventId}`. Eventor-specific data is
+        carried in `<Extensions>` elements (namespace
+        `http://eventor.orientering.se/iofxmlextensions`).
+
+        Officially listed on the Australian and International API
+        documentation pages, but also works on the Norwegian and Swedish
+        instances.
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+            example: 8248
+          required: true
+          description: The ID of the event as specified by `/events`.
+      responses:
+        "200":
+          description: IOF XML 3.0 `EventList` with a single `Event`
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  Eventor-specific data is carried in `<Extensions>` elements
+                  (namespace `http://eventor.orientering.se/iofxmlextensions`,
+                  prefix `eventor:`) — see the `EventorExtensions` component
+                  schema for the supported children and their types.
+
   /eventclasses:
     get:
       summary: Returns all classes in an event.
@@ -4455,6 +4816,35 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/OrganisationList'
+
+  /organisations/iofxml:
+    get:
+      summary: Returns all organisations in IOF XML 3.0 format.
+      description: |
+        IOF XML 3.0 variant of `/organisations`. In practice the response
+        contains no `<Extensions>` elements — all data fits the IOF schema.
+
+        Officially listed on the Australian and International API
+        documentation pages, but also works on the Norwegian and Swedish
+        instances.
+      parameters:
+        - in: query
+          name: includeProperties
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include extended information about the organisations.
+      responses:
+        "200":
+          description: IOF XML 3.0 `OrganisationList`
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
 
   /organisation/{id}:
     get:
@@ -4753,7 +5143,16 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  The embedded `Event`/`Race` carries Eventor-specific data in
+                  `<Extensions>` elements (namespace
+                  `http://eventor.orientering.se/iofxmlextensions`, prefix
+                  `eventor:`) — see the `EventorExtensions` component schema for
+                  the supported children and their types.
 
   /starts/person:
     get:
@@ -4848,6 +5247,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResultList'
 
+  /wrsresults/event:
+    get:
+      summary: Returns results for a class of an event registered in the WRS (World Ranking System).
+      description: |
+        Only available on the International Eventor instance
+        (`eventor.orienteering.sport`).
+      parameters:
+        - in: query
+          name: classId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the event class as specified by `/eventclasses`.
+      responses:
+        "200":
+          description: XML element `ResultList`
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ResultList'
+
   /results/event/iofxml:
     get:
       summary: Returns results in IOF XML 3.0 format for an event.
@@ -4884,7 +5304,16 @@ paths:
             application/xml:
               schema:
                 type: string
-                description: IOF XML 3.0 format — see IOF XSD for schema
+                description: |
+                  IOF XML 3.0 format. The IOF-defined structure follows the
+                  [IOF datastandard-v3 XSD](https://github.com/international-orienteering-federation/datastandard-v3)
+                  and is not duplicated here.
+
+                  The embedded `Event`/`Race` carries Eventor-specific data in
+                  `<Extensions>` elements (namespace
+                  `http://eventor.orientering.se/iofxmlextensions`, prefix
+                  `eventor:`) — see the `EventorExtensions` component schema for
+                  the supported children and their types.
 
   /results/person:
     get:
@@ -5108,6 +5537,45 @@ paths:
                     <Name>Men Open</Name>
                   </Class>
                 </Competitor>
+
+  /memberships:
+    get:
+      summary: Returns the memberships of an organisation for a given year.
+      description: |
+        Only available on the Australian Eventor instance
+        (`eventor.orienteering.asn.au`).
+      parameters:
+        - in: query
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: year
+          schema:
+            type: integer
+          required: true
+          description: The year to include memberships for.
+        - in: query
+          name: includeChildOrganisations
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include memberships for any underlying organisations. Not applicable for clubs.
+        - in: query
+          name: includeContactDetails
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the members' phone numbers and email addresses.
+      responses:
+        "200":
+          description: XML element `OrganisationMembershipList`
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrganisationMembershipList'
 
   /export/competitors:
     get:
