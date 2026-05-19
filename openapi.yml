@@ -27,6 +27,4190 @@ components:
       name: ApiKey
       in: header
 
+  schemas:
+    Activity:
+      type: object
+      properties:
+        Name:
+          $ref: '#/components/schemas/Name'
+        Information:
+          $ref: '#/components/schemas/Information'
+        ActivityAttribute:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityAttribute'
+          xml:
+            name: ActivityAttribute
+            wrapped: false
+        ActivityRegistration:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityRegistration'
+          xml:
+            name: ActivityRegistration
+            wrapped: false
+        id:
+          type: integer
+          xml:
+            attribute: true
+        organisationId:
+          type: integer
+          xml:
+            attribute: true
+        visibleFrom:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+        registrationDeadline:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+        startTime:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+        visibleTo:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+        allowExternalRegistrations:
+          type: boolean
+          xml:
+            attribute: true
+        contactPersonId:
+          type: integer
+          xml:
+            attribute: true
+        registrationCount:
+          type: integer
+          xml:
+            attribute: true
+        url:
+          type: string
+          xml:
+            attribute: true
+        entryAccessLevel:
+          type: string
+          enum:
+            - All
+            - LoggedIn
+            - Admin
+          xml:
+            attribute: true
+        modifiedBy:
+          type: integer
+          xml:
+            attribute: true
+        modifyDate:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      required:
+        - Name
+        - allowExternalRegistrations
+        - entryAccessLevel
+        - id
+        - organisationId
+        - registrationCount
+        - url
+        - visibleFrom
+        - visibleTo
+      xml:
+        name: Activity
+    ActivityAttribute:
+      type: object
+      properties:
+        Name:
+          $ref: '#/components/schemas/Name'
+        Information:
+          $ref: '#/components/schemas/Information'
+        Value:
+          type: array
+          items:
+            $ref: '#/components/schemas/Value'
+          xml:
+            name: Value
+            wrapped: false
+        id:
+          type: integer
+          xml:
+            attribute: true
+        type:
+          type: string
+          enum:
+            - Text
+            - RadioButtons
+            - CheckBoxes
+            - SingleSelectList
+            - MultiSelectList
+          xml:
+            attribute: true
+        order:
+          type: integer
+          xml:
+            attribute: true
+        visibleInList:
+          type: boolean
+          default: 'true'
+          xml:
+            attribute: true
+      required:
+        - Name
+        - id
+        - order
+        - type
+      xml:
+        name: ActivityAttribute
+    ActivityList:
+      type: object
+      properties:
+        Activity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+          xml:
+            name: Activity
+            wrapped: false
+      xml:
+        name: ActivityList
+    ActivityRegistration:
+      type: object
+      properties:
+        AttributeValue:
+          type: array
+          items:
+            type: object
+            properties:
+              activityAttributeId:
+                type: integer
+                xml:
+                  attribute: true
+            required:
+              - activityAttributeId
+          xml:
+            name: AttributeValue
+            wrapped: false
+        personId:
+          type: integer
+          xml:
+            attribute: true
+        organisationId:
+          type: integer
+          xml:
+            attribute: true
+        modifiedBy:
+          type: integer
+          xml:
+            attribute: true
+        modifyDate:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      required:
+        - personId
+      xml:
+        name: ActivityRegistration
+    Address:
+      type: object
+      properties:
+        AddressType:
+          $ref: '#/components/schemas/AddressType'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        careOf:
+          type: string
+          xml:
+            attribute: true
+        street:
+          type: string
+          xml:
+            attribute: true
+        city:
+          type: string
+          xml:
+            attribute: true
+        zipCode:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - city
+        - street
+      xml:
+        name: Address
+    AddressType:
+      type: object
+      properties:
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: AddressType
+    AgeGroup:
+      type: object
+      properties:
+        Name:
+          $ref: '#/components/schemas/Name'
+      required:
+        - Name
+      xml:
+        name: AgeGroup
+    AllocationControl:
+      type: object
+      properties:
+        AllocationControlType:
+          $ref: '#/components/schemas/AllocationControlType'
+      required:
+        - AllocationControlType
+      xml:
+        name: AllocationControl
+    AllocationControlType:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - lateStart
+            - normal
+            - earlyStart
+            - distributedFromRef
+            - other
+            - groupedWithRef
+          default: normal
+          xml:
+            attribute: true
+      xml:
+        name: AllocationControlType
+    Alpha2:
+      type: object
+      properties:
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: Alpha2
+    Alpha3:
+      type: object
+      properties:
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: Alpha3
+    AlternativeDates:
+      type: object
+      properties:
+        Sequence:
+          $ref: '#/components/schemas/Sequence'
+        StartDate:
+          $ref: '#/components/schemas/StartDate'
+        FinishDate:
+          $ref: '#/components/schemas/FinishDate'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - Sequence
+        - StartDate
+      xml:
+        name: AlternativeDates
+    Amount:
+      type: object
+      properties:
+        _text:
+          type: string
+        currency:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: Amount
+    BaseClass:
+      type: object
+      properties:
+        BaseClassId:
+          $ref: '#/components/schemas/BaseClassId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ClassShortName:
+          $ref: '#/components/schemas/ClassShortName'
+        ParentOrganisation:
+          $ref: '#/components/schemas/ParentOrganisation'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+        lowAge:
+          type: string
+          xml:
+            attribute: true
+        highAge:
+          type: string
+          xml:
+            attribute: true
+        sex:
+          type: string
+          enum:
+            - B
+            - F
+            - M
+          xml:
+            attribute: true
+        sequence:
+          type: string
+          xml:
+            attribute: true
+        numberInTeam:
+          type: string
+          default: 1
+          xml:
+            attribute: true
+        timePresentation:
+          type: string
+          enum:
+            - N
+            - Y
+          default: Y
+          xml:
+            attribute: true
+      required:
+        - BaseClassId
+        - ClassShortName
+        - ParentOrganisation
+        - sex
+      xml:
+        name: BaseClass
+    BaseClassGroup:
+      type: object
+      properties:
+        BaseClassGroupId:
+          $ref: '#/components/schemas/BaseClassGroupId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ParentOrganisation:
+          $ref: '#/components/schemas/ParentOrganisation'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - BaseClassGroupId
+        - Name
+        - ParentOrganisation
+      xml:
+        name: BaseClassGroup
+    BaseClassGroupId:
+      type: string
+      xml:
+        name: BaseClassGroupId
+    BaseClassGroupList:
+      type: object
+      properties:
+        BaseClassGroup:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseClassGroup'
+          xml:
+            name: BaseClassGroup
+            wrapped: false
+      xml:
+        name: BaseClassGroupList
+    BaseClassId:
+      type: string
+      xml:
+        name: BaseClassId
+    BibNumber:
+      type: string
+      xml:
+        name: BibNumber
+    BirthDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+      required:
+        - Date
+      xml:
+        name: BirthDate
+    CCard:
+      type: object
+      properties:
+        CCardId:
+          $ref: '#/components/schemas/CCardId'
+        PunchingUnitType:
+          $ref: '#/components/schemas/PunchingUnitType'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - CCardId
+        - PunchingUnitType
+      xml:
+        name: CCard
+    CCardId:
+      type: string
+      xml:
+        name: CCardId
+    Championship:
+      type: object
+      properties:
+        ChampionshipId:
+          $ref: '#/components/schemas/ChampionshipId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ChampionshipType:
+          $ref: '#/components/schemas/ChampionshipType'
+        ChampionshipDiscipline:
+          $ref: '#/components/schemas/ChampionshipDiscipline'
+        AgeGroup:
+          $ref: '#/components/schemas/AgeGroup'
+      required:
+        - AgeGroup
+        - ChampionshipDiscipline
+        - ChampionshipId
+        - ChampionshipType
+        - Name
+      xml:
+        name: Championship
+    ChampionshipDiscipline:
+      type: object
+      properties:
+        Name:
+          $ref: '#/components/schemas/Name'
+      required:
+        - Name
+      xml:
+        name: ChampionshipDiscipline
+    ChampionshipId:
+      type: string
+      xml:
+        name: ChampionshipId
+    ChampionshipPosition:
+      type: string
+      xml:
+        name: ChampionshipPosition
+    ChampionshipRaceSubType:
+      type: string
+      xml:
+        name: ChampionshipRaceSubType
+    ChampionshipResult:
+      type: object
+      properties:
+        ChampionshipId:
+          $ref: '#/components/schemas/ChampionshipId'
+        ChampionshipPosition:
+          $ref: '#/components/schemas/ChampionshipPosition'
+      required:
+        - ChampionshipId
+      xml:
+        name: ChampionshipResult
+    ChampionshipResultlist:
+      type: object
+      properties:
+        ChampionshipResultlistId:
+          $ref: '#/components/schemas/ChampionshipResultlistId'
+        ChampionshipRaceSubType:
+          $ref: '#/components/schemas/ChampionshipRaceSubType'
+        ClassResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassResult'
+          xml:
+            name: ClassResult
+            wrapped: false
+        raceClassName:
+          type: string
+          enum:
+            - Men
+            - Women
+            - OClass
+            - PClass
+            - Mixed
+            - Men-18
+            - Women-18
+            - Men-16
+            - Women-16
+            - Men-35
+            - Women-35
+            - Men-40
+            - Women-40
+            - Men-45
+            - Women-45
+            - Men-50
+            - Women-50
+            - Men-55
+            - Women-55
+            - Men-60
+            - Women-60
+            - Men-65
+            - Women-65
+            - Men-70
+            - Women-70
+            - Men-75
+            - Women-75
+            - Men-80
+            - Women-80
+            - Men-85
+            - Women-85
+            - Men-90
+            - Women-90
+            - Men-95
+            - Women-95
+            - Men-100
+            - Women-100
+            - NotSet
+          default: NotSet
+          xml:
+            attribute: true
+        championshipCompetitionFormat:
+          type: string
+          enum:
+            - Sprint
+            - Middle
+            - Long
+            - UltraLong
+            - PreO
+            - TempO
+            - Masstart
+            - Pursuit
+            - KnockOutSprint
+            - Relay
+            - SprintRelay
+            - MixedRelay
+            - Qualification
+            - NotSet
+          default: NotSet
+          xml:
+            attribute: true
+      required:
+        - ChampionshipRaceSubType
+        - ChampionshipResultlistId
+      xml:
+        name: ChampionshipResultlist
+    ChampionshipResultlistId:
+      type: string
+      xml:
+        name: ChampionshipResultlistId
+    ChampionshipResults:
+      type: object
+      xml:
+        name: ChampionshipResults
+    ChampionshipType:
+      type: object
+      properties:
+        Name:
+          $ref: '#/components/schemas/Name'
+        ShortName:
+          $ref: '#/components/schemas/ShortName'
+      required:
+        - Name
+        - ShortName
+      xml:
+        name: ChampionshipType
+    Championships:
+      type: object
+      xml:
+        name: Championships
+    ClassCompetitorCount:
+      type: object
+      properties:
+        eventClassId:
+          type: string
+          xml:
+            attribute: true
+        numberOfEntries:
+          type: string
+          xml:
+            attribute: true
+        numberOfStarts:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: ClassCompetitorCount
+    ClassData:
+      type: object
+      properties:
+        ClassType:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassType'
+          xml:
+            name: ClassType
+            wrapped: false
+        BaseClass:
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseClass'
+          xml:
+            name: BaseClass
+            wrapped: false
+      xml:
+        name: ClassData
+    ClassEntryFee:
+      type: object
+      properties:
+        Sequence:
+          $ref: '#/components/schemas/Sequence'
+        EventRaceId:
+          $ref: '#/components/schemas/EventRaceId'
+        isWholeEventFee:
+          type: boolean
+          default: 'false'
+          xml:
+            attribute: true
+      required:
+        - Sequence
+      xml:
+        name: ClassEntryFee
+    ClassRaceInfo:
+      type: object
+      properties:
+        ClassRaceInfoId:
+          $ref: '#/components/schemas/ClassRaceInfoId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        CourseLength:
+          $ref: '#/components/schemas/CourseLength'
+        ClassRaceStatus:
+          $ref: '#/components/schemas/ClassRaceStatus'
+        PunchingUnitType:
+          type: array
+          items:
+            $ref: '#/components/schemas/PunchingUnitType'
+          xml:
+            name: PunchingUnitType
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+        relayLeg:
+          type: string
+          xml:
+            attribute: true
+        minRunners:
+          type: string
+          xml:
+            attribute: true
+        maxRunners:
+          type: string
+          xml:
+            attribute: true
+        timeResolution:
+          type: string
+          enum:
+            - minutes
+            - seconds
+            - tens
+            - hundreds
+          default: seconds
+          xml:
+            attribute: true
+        noOfEntries:
+          type: string
+          xml:
+            attribute: true
+        noOfStarts:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - ClassRaceInfoId
+        - ClassRaceStatus
+      xml:
+        name: ClassRaceInfo
+    ClassRaceInfoId:
+      type: string
+      xml:
+        name: ClassRaceInfoId
+    ClassRaceInfoList:
+      type: object
+      properties:
+        ClassRaceInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassRaceInfo'
+          xml:
+            name: ClassRaceInfo
+            wrapped: false
+      xml:
+        name: ClassRaceInfoList
+    ClassRaceStatus:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - notAllocated
+            - finished
+            - deletedFee
+            - deletedNoFee
+            - allocated
+            - started
+            - notUsed
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: ClassRaceStatus
+    ClassResult:
+      type: object
+      properties:
+        numberOfEntries:
+          type: string
+          xml:
+            attribute: true
+        numberOfStarts:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: ClassResult
+    ClassShortName:
+      type: string
+      xml:
+        name: ClassShortName
+    ClassStart:
+      type: object
+      properties:
+        numberOfEntries:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: ClassStart
+    ClassType:
+      type: object
+      properties:
+        ClassTypeId:
+          $ref: '#/components/schemas/ClassTypeId'
+        ShortName:
+          $ref: '#/components/schemas/ShortName'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - ClassTypeId
+        - Name
+        - ShortName
+      xml:
+        name: ClassType
+    ClassTypeComment:
+      type: string
+      xml:
+        name: ClassTypeComment
+    ClassTypeId:
+      type: string
+      xml:
+        name: ClassTypeId
+    Clock:
+      type: object
+      properties:
+        _text:
+          type: string
+        clockFormat:
+          type: string
+          default: 'HH:MM:SS'
+          xml:
+            attribute: true
+      xml:
+        name: Clock
+    Comment:
+      type: object
+      properties:
+        _text:
+          type: string
+        languageId:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: Comment
+    Competitor:
+      type: object
+      properties:
+        CompetitorId:
+          $ref: '#/components/schemas/CompetitorId'
+        PreSelectedClass:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreSelectedClass'
+          xml:
+            name: PreSelectedClass
+            wrapped: false
+        CCard:
+          type: array
+          items:
+            $ref: '#/components/schemas/CCard'
+          xml:
+            name: CCard
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - CompetitorId
+      xml:
+        name: Competitor
+    CompetitorCount:
+      type: object
+      properties:
+        ClassCompetitorCount:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassCompetitorCount'
+          xml:
+            name: ClassCompetitorCount
+            wrapped: false
+        OrganisationCompetitorCount:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationCompetitorCount'
+          xml:
+            name: OrganisationCompetitorCount
+            wrapped: false
+        eventId:
+          type: string
+          xml:
+            attribute: true
+        eventRaceId:
+          type: string
+          xml:
+            attribute: true
+        numberOfEntries:
+          type: string
+          xml:
+            attribute: true
+        numberOfStarts:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: CompetitorCount
+    CompetitorCountList:
+      type: object
+      properties:
+        CompetitorCount:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompetitorCount'
+          xml:
+            name: CompetitorCount
+            wrapped: false
+      xml:
+        name: CompetitorCountList
+    CompetitorId:
+      type: string
+      xml:
+        name: CompetitorId
+    CompetitorList:
+      type: object
+      properties:
+        Competitor:
+          type: array
+          items:
+            $ref: '#/components/schemas/Competitor'
+          xml:
+            name: Competitor
+            wrapped: false
+      xml:
+        name: CompetitorList
+    CompetitorStatus:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - Inactive
+            - MisPunch
+            - DidNotStart
+            - MovedUp
+            - OverTime
+            - Moved
+            - Active
+            - Disqualified
+            - DidNotFinish
+            - Cancelled
+            - SportWithdr
+            - OK
+            - NotCompeting
+            - Finished
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: CompetitorStatus
+    ContactData:
+      type: object
+      properties:
+        Address:
+          $ref: '#/components/schemas/Address'
+        Tele:
+          $ref: '#/components/schemas/Tele'
+      required:
+        - Address
+        - Tele
+      xml:
+        name: ContactData
+    ControlCode:
+      type: string
+      xml:
+        name: ControlCode
+    Country:
+      type: object
+      properties:
+        CountryId:
+          $ref: '#/components/schemas/CountryId'
+        Alpha2:
+          $ref: '#/components/schemas/Alpha2'
+        Alpha3:
+          $ref: '#/components/schemas/Alpha3'
+        Name:
+          type: array
+          items:
+            $ref: '#/components/schemas/Name'
+          xml:
+            name: Name
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - Alpha2
+        - Alpha3
+        - CountryId
+      xml:
+        name: Country
+    CountryId:
+      type: object
+      properties:
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: CountryId
+    CountryList:
+      type: object
+      properties:
+        Country:
+          type: array
+          items:
+            $ref: '#/components/schemas/Country'
+          xml:
+            name: Country
+            wrapped: false
+      xml:
+        name: CountryList
+    CourseLength:
+      type: object
+      properties:
+        _text:
+          type: string
+        unit:
+          type: string
+          enum:
+            - ft
+            - km
+            - m
+          default: m
+          xml:
+            attribute: true
+      xml:
+        name: CourseLength
+    CreateDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: CreateDate
+    CreatedBy:
+      type: object
+      xml:
+        name: CreatedBy
+    Data:
+      type: string
+      xml:
+        name: Data
+    Date:
+      type: object
+      properties:
+        _text:
+          type: string
+        dateFormat:
+          type: string
+          default: YYYY-MM-DD
+          xml:
+            attribute: true
+      xml:
+        name: Date
+    DeletedEventRaceList:
+      type: object
+      properties:
+        DeletedEventRace:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                xml:
+                  attribute: true
+              eventId:
+                type: integer
+                xml:
+                  attribute: true
+              eventRaceId:
+                type: integer
+                xml:
+                  attribute: true
+              deletedTime:
+                type: string
+                format: date-time
+                xml:
+                  attribute: true
+            required:
+              - deletedTime
+              - eventId
+              - eventRaceId
+              - id
+          xml:
+            name: DeletedEventRace
+            wrapped: false
+      xml:
+        name: DeletedEventRaceList
+    Discipline:
+      type: object
+      properties:
+        DisciplineId:
+          $ref: '#/components/schemas/DisciplineId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - DisciplineId
+        - Name
+      xml:
+        name: Discipline
+    DisciplineId:
+      type: string
+      xml:
+        name: DisciplineId
+    DisciplineList:
+      type: object
+      properties:
+        Discipline:
+          type: array
+          items:
+            $ref: '#/components/schemas/Discipline'
+          xml:
+            name: Discipline
+            wrapped: false
+      xml:
+        name: DisciplineList
+    DiversityDataList:
+      type: object
+      properties:
+        DiversityData:
+          type: array
+          items:
+            type: object
+            properties:
+              IndigenousPeople:
+                type: string
+              Gender:
+                type: string
+              LGBTQ:
+                type: string
+              CulturalDiversity:
+                type: string
+              DisabilityStatus:
+                type: string
+              Sex:
+                type: string
+              Age:
+                type: integer
+              State:
+                type: string
+            required:
+              - Age
+              - CulturalDiversity
+              - DisabilityStatus
+              - Gender
+              - IndigenousPeople
+              - LGBTQ
+              - Sex
+              - State
+          xml:
+            name: DiversityData
+            wrapped: false
+      xml:
+        name: DiversityDataList
+    DocumentList:
+      type: object
+      properties:
+        Document:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                xml:
+                  attribute: true
+              referenceId:
+                type: integer
+                xml:
+                  attribute: true
+              name:
+                type: string
+                xml:
+                  attribute: true
+              url:
+                type: string
+                xml:
+                  attribute: true
+              modifyDate:
+                type: string
+                format: date-time
+                xml:
+                  attribute: true
+              type:
+                type: string
+                xml:
+                  attribute: true
+              number:
+                type: integer
+                xml:
+                  attribute: true
+            required:
+              - id
+              - modifyDate
+              - name
+              - url
+          xml:
+            name: Document
+            wrapped: false
+      xml:
+        name: DocumentList
+    EducationList:
+      type: object
+      properties:
+        Education:
+          type: array
+          items:
+            type: object
+            properties:
+              Id:
+                type: integer
+              Name:
+                $ref: '#/components/schemas/Name'
+              StartTime:
+                $ref: '#/components/schemas/StartTime'
+              EndTime:
+                type: string
+                format: date-time
+              Latitude:
+                type: number
+                format: double
+              Longitude:
+                type: number
+                format: double
+              Address:
+                $ref: '#/components/schemas/Address'
+              Municipality:
+                type: string
+              Region:
+                type: string
+              RegionId:
+                type: integer
+              Url:
+                type: string
+              Email:
+                type: string
+              PriceAmount:
+                type: number
+              PriceCurrency:
+                type: string
+              Included:
+                type: string
+              OrganisationId:
+                $ref: '#/components/schemas/OrganisationId'
+              TargetGroup:
+                type: string
+              Contents:
+                type: string
+              AdditionalInformation:
+                type: string
+              ModifyTime:
+                type: string
+                format: date-time
+            required:
+              - Address
+              - EndTime
+              - Id
+              - Latitude
+              - Longitude
+              - ModifyTime
+              - Municipality
+              - Name
+              - OrganisationId
+              - Region
+              - RegionId
+              - StartTime
+          xml:
+            name: Education
+            wrapped: false
+      xml:
+        name: EducationList
+    Entry:
+      type: object
+      properties:
+        EntryId:
+          $ref: '#/components/schemas/EntryId'
+        EntryClass:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryClass'
+          xml:
+            name: EntryClass
+            wrapped: false
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        AllocationControl:
+          $ref: '#/components/schemas/AllocationControl'
+        EntryDate:
+          $ref: '#/components/schemas/EntryDate'
+        EntryEntryFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryEntryFee'
+          xml:
+            name: EntryEntryFee
+            wrapped: false
+        Data:
+          $ref: '#/components/schemas/Data'
+        EntryFeeGroupId:
+          type: integer
+        CompetitorStatus:
+          $ref: '#/components/schemas/CompetitorStatus'
+        CreatedBy:
+          $ref: '#/components/schemas/CreatedBy'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - EntryDate
+      xml:
+        name: Entry
+    EntryBreak:
+      type: object
+      properties:
+        ValidFromDate:
+          $ref: '#/components/schemas/ValidFromDate'
+        ValidToDate:
+          $ref: '#/components/schemas/ValidToDate'
+      xml:
+        name: EntryBreak
+    EntryClass:
+      type: object
+      properties:
+        EventClassId:
+          $ref: '#/components/schemas/EventClassId'
+        ClassShortName:
+          $ref: '#/components/schemas/ClassShortName'
+        EventClass:
+          $ref: '#/components/schemas/EventClass'
+        sequence:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - ClassShortName
+        - EventClass
+        - EventClassId
+      xml:
+        name: EntryClass
+    EntryClassId:
+      type: string
+      xml:
+        name: EntryClassId
+    EntryDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: EntryDate
+    EntryEntryFee:
+      type: object
+      properties:
+        Sequence:
+          $ref: '#/components/schemas/Sequence'
+        eventRaceId:
+          type: string
+          xml:
+            attribute: true
+        isWholeEventFee:
+          type: boolean
+          default: 'false'
+          xml:
+            attribute: true
+        competitionUploadResultId:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - Sequence
+      xml:
+        name: EntryEntryFee
+    EntryFee:
+      type: object
+      properties:
+        EntryFeeId:
+          $ref: '#/components/schemas/EntryFeeId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        Amount:
+          $ref: '#/components/schemas/Amount'
+        PaidAmount:
+          $ref: '#/components/schemas/PaidAmount'
+        ExternalFee:
+          $ref: '#/components/schemas/ExternalFee'
+        ValidFromDate:
+          $ref: '#/components/schemas/ValidFromDate'
+        ValidToDate:
+          $ref: '#/components/schemas/ValidToDate'
+        FromDateOfBirth:
+          $ref: '#/components/schemas/FromDateOfBirth'
+        ToDateOfBirth:
+          $ref: '#/components/schemas/ToDateOfBirth'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        EntryFeeGroupId:
+          type: integer
+        taxIncluded:
+          type: string
+          enum:
+            - N
+            - Y
+          default: Y
+          xml:
+            attribute: true
+        valueOperator:
+          type: string
+          enum:
+            - fixed
+            - percent
+          default: fixed
+          xml:
+            attribute: true
+        entryFeeType:
+          type: string
+          enum:
+            - elite
+            - adult
+            - youth
+            - notSpecified
+            - Imported
+          default: notSpecified
+          xml:
+            attribute: true
+        type:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - Amount
+      xml:
+        name: EntryFee
+    EntryFeeId:
+      type: string
+      xml:
+        name: EntryFeeId
+    EntryFeeList:
+      type: object
+      properties:
+        EntryFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryFee'
+          xml:
+            name: EntryFee
+            wrapped: false
+      xml:
+        name: EntryFeeList
+    EntryFeeSequence:
+      type: string
+      xml:
+        name: EntryFeeSequence
+    EntryId:
+      type: string
+      xml:
+        name: EntryId
+    EntryList:
+      type: object
+      properties:
+        Entry:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entry'
+          xml:
+            name: Entry
+            wrapped: false
+      xml:
+        name: EntryList
+    Event:
+      type: object
+      properties:
+        EventId:
+          $ref: '#/components/schemas/EventId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        StartDate:
+          $ref: '#/components/schemas/StartDate'
+        FinishDate:
+          $ref: '#/components/schemas/FinishDate'
+        AlternativeDates:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlternativeDates'
+          xml:
+            name: AlternativeDates
+            wrapped: false
+        EventOfficial:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventOfficial'
+          xml:
+            name: EventOfficial
+            wrapped: false
+        Organiser:
+          $ref: '#/components/schemas/Organiser'
+        Championships:
+          $ref: '#/components/schemas/Championships'
+        Resultlists:
+          $ref: '#/components/schemas/Resultlists'
+        EntryBreak:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryBreak'
+          xml:
+            name: EntryBreak
+            wrapped: false
+        EventRace:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventRace'
+          xml:
+            name: EventRace
+            wrapped: false
+        WebURL:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebURL'
+          xml:
+            name: WebURL
+            wrapped: false
+        ContactData:
+          $ref: '#/components/schemas/ContactData'
+        ServiceType:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceType'
+          xml:
+            name: ServiceType
+            wrapped: false
+        Service:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+          xml:
+            name: Service
+            wrapped: false
+        ServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRequest'
+          xml:
+            name: ServiceRequest
+            wrapped: false
+        Comment:
+          $ref: '#/components/schemas/Comment'
+        ClassTypeComment:
+          $ref: '#/components/schemas/ClassTypeComment'
+        PunchingUnitType:
+          type: array
+          items:
+            $ref: '#/components/schemas/PunchingUnitType'
+          xml:
+            name: PunchingUnitType
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+        ParentEvent:
+          $ref: '#/components/schemas/ParentEvent'
+        eventForm:
+          type: string
+          enum:
+            - IndSingleDay
+            - IndMultiDay
+            - TeamSingleDay
+            - TeamMultiDay
+            - RelaySingleDay
+            - RelayMultiDay
+            - PatrolSingleDay
+            - PatrolMultiDay
+            - MasterEvent
+          default: IndSingleDay
+          xml:
+            attribute: true
+      required:
+        - EventId
+        - Name
+        - StartDate
+      xml:
+        name: Event
+    EventAttribute:
+      type: object
+      properties:
+        EventAttributeId:
+          $ref: '#/components/schemas/EventAttributeId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        Description:
+          type: string
+        ParentOrganisation:
+          $ref: '#/components/schemas/ParentOrganisation'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - EventAttributeId
+        - Name
+        - ParentOrganisation
+      xml:
+        name: EventAttribute
+    EventAttributeId:
+      type: string
+      xml:
+        name: EventAttributeId
+    EventAttributeList:
+      type: object
+      properties:
+        EventAttribute:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventAttribute'
+          xml:
+            name: EventAttribute
+            wrapped: false
+      xml:
+        name: EventAttributeList
+    EventCenterPosition:
+      type: object
+      properties:
+        x:
+          type: string
+          xml:
+            attribute: true
+        y:
+          type: string
+          xml:
+            attribute: true
+        unit:
+          type: string
+          enum:
+            - ft
+            - WGS-84
+            - km
+            - other
+            - m
+          default: m
+          xml:
+            attribute: true
+      required:
+        - x
+        - y
+      xml:
+        name: EventCenterPosition
+    EventClass:
+      type: object
+      properties:
+        EventClassId:
+          $ref: '#/components/schemas/EventClassId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ClassShortName:
+          $ref: '#/components/schemas/ClassShortName'
+        EventClassStatus:
+          $ref: '#/components/schemas/EventClassStatus'
+        ExternalId:
+          $ref: '#/components/schemas/ExternalId'
+        ClassEntryFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassEntryFee'
+          xml:
+            name: ClassEntryFee
+            wrapped: false
+        PunchingUnitType:
+          type: array
+          items:
+            $ref: '#/components/schemas/PunchingUnitType'
+          xml:
+            name: PunchingUnitType
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+        lowAge:
+          type: string
+          xml:
+            attribute: true
+        highAge:
+          type: string
+          xml:
+            attribute: true
+        sequence:
+          type: string
+          xml:
+            attribute: true
+        sex:
+          type: string
+          enum:
+            - B
+            - F
+            - M
+          xml:
+            attribute: true
+        numberInTeam:
+          type: string
+          default: 1
+          xml:
+            attribute: true
+        teamEntry:
+          type: string
+          enum:
+            - N
+            - Y
+          default: N
+          xml:
+            attribute: true
+        numberOfLegs:
+          type: string
+          default: 1
+          xml:
+            attribute: true
+        numberOfEntries:
+          type: string
+          xml:
+            attribute: true
+        timePresentation:
+          type: string
+          enum:
+            - N
+            - Y
+          default: Y
+          xml:
+            attribute: true
+        minAverageAge:
+          type: string
+          xml:
+            attribute: true
+        maxAverageAge:
+          type: string
+          xml:
+            attribute: true
+        allowEntryInAdvance:
+          type: string
+          enum:
+            - N
+            - Y
+          default: Y
+          xml:
+            attribute: true
+      required:
+        - ClassShortName
+        - EventClassId
+        - EventClassStatus
+        - sex
+      xml:
+        name: EventClass
+    EventClassId:
+      type: string
+      xml:
+        name: EventClassId
+    EventClassList:
+      type: object
+      properties:
+        EventClass:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventClass'
+          xml:
+            name: EventClass
+            wrapped: false
+      xml:
+        name: EventClassList
+    EventClassStatus:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - normal
+            - deletedNoFee
+            - deletedFee
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: EventClassStatus
+    EventClassification:
+      type: object
+      properties:
+        EventClassificationId:
+          $ref: '#/components/schemas/EventClassificationId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - EventClassificationId
+        - Name
+      xml:
+        name: EventClassification
+    EventClassificationId:
+      type: string
+      xml:
+        name: EventClassificationId
+    EventId:
+      type: string
+      xml:
+        name: EventId
+    EventList:
+      type: object
+      properties:
+        EventClassification:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventClassification'
+          xml:
+            name: EventClassification
+            wrapped: false
+        Event:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          xml:
+            name: Event
+            wrapped: false
+      xml:
+        name: EventList
+    EventOfficial:
+      type: object
+      properties:
+        EventOfficialId:
+          $ref: '#/components/schemas/EventOfficialId'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - EventOfficialId
+      xml:
+        name: EventOfficial
+    EventOfficialId:
+      type: string
+      xml:
+        name: EventOfficialId
+    EventPunchingSystem:
+      type: object
+      properties:
+        EventPunchingSystemId:
+          $ref: '#/components/schemas/EventPunchingSystemId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        Code:
+          type: object
+          properties:
+            _text:
+              type: string
+            None:
+              type: string
+              xml:
+                attribute: true
+      required:
+        - Code
+        - EventPunchingSystemId
+        - Name
+      xml:
+        name: EventPunchingSystem
+    EventPunchingSystemId:
+      type: string
+      xml:
+        name: EventPunchingSystemId
+    EventPunchingSystemList:
+      type: object
+      properties:
+        EventPunchingSystem:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventPunchingSystem'
+          xml:
+            name: EventPunchingSystem
+            wrapped: false
+      xml:
+        name: EventPunchingSystemList
+    EventRace:
+      type: object
+      properties:
+        EventRaceId:
+          $ref: '#/components/schemas/EventRaceId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        RaceDate:
+          $ref: '#/components/schemas/RaceDate'
+        EventOfficial:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventOfficial'
+          xml:
+            name: EventOfficial
+            wrapped: false
+        EventCenterPosition:
+          $ref: '#/components/schemas/EventCenterPosition'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        WRSInfo:
+          type: object
+          properties:
+            EventRaceId:
+              $ref: '#/components/schemas/EventRaceId'
+            EventDate:
+              type: string
+            Name:
+              $ref: '#/components/schemas/Name'
+            EventName:
+              type: string
+            SuperEventName:
+              type: string
+            Distance:
+              type: string
+            WRSEventHow:
+              type: string
+            IsWre:
+              type: string
+            IsWCup:
+              type: string
+            RegionalChamps:
+              type: string
+            FederationId:
+              type: string
+          required:
+            - Distance
+            - EventDate
+            - EventName
+            - EventRaceId
+            - FederationId
+            - IsWCup
+            - IsWre
+            - Name
+            - RegionalChamps
+            - SuperEventName
+            - WRSEventHow
+        raceLightCondition:
+          type: string
+          enum:
+            - Day
+            - Night
+            - DayAndNight
+          default: Day
+          xml:
+            attribute: true
+        raceDistance:
+          type: string
+          enum:
+            - Sprint
+            - Middle
+            - Long
+            - UltraLong
+            - PreO
+            - TempO
+            - Masstart
+            - Pursuit
+            - KnockOutSprint
+            - Relay
+            - SprintRelay
+            - MixedRelay
+            - Qualification
+            - NotSet
+            - PreOSprint
+          default: Middle
+          xml:
+            attribute: true
+      required:
+        - EventRaceId
+        - Name
+        - RaceDate
+        - WRSInfo
+      xml:
+        name: EventRace
+    EventRaceId:
+      type: string
+      xml:
+        name: EventRaceId
+    EventStatus:
+      type: object
+      properties:
+        EventStatusId:
+          $ref: '#/components/schemas/EventStatusId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - EventStatusId
+        - Name
+      xml:
+        name: EventStatus
+    EventStatusId:
+      type: string
+      xml:
+        name: EventStatusId
+    ExternalFee:
+      type: object
+      properties:
+        _text:
+          type: string
+        currency:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: ExternalFee
+    ExternalId:
+      type: string
+      xml:
+        name: ExternalId
+    ExternalLinks:
+      type: object
+      properties:
+        Event:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          xml:
+            name: Event
+            wrapped: false
+      xml:
+        name: ExternalLinks
+    ExternalLoginUrl:
+      type: string
+      xml:
+        name: ExternalLoginUrl
+    ExternalPersonId:
+      type: object
+      properties:
+        typeId:
+          type: integer
+          xml:
+            attribute: true
+        id:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - id
+        - typeId
+      xml:
+        name: ExternalPersonId
+    Family:
+      type: string
+      xml:
+        name: Family
+    FinishDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: FinishDate
+    FinishPoint:
+      type: object
+      properties:
+        PunchingUnitType:
+          $ref: '#/components/schemas/PunchingUnitType'
+        Comment:
+          $ref: '#/components/schemas/Comment'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      xml:
+        name: FinishPoint
+    FinishTime:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Clock
+      xml:
+        name: FinishTime
+    FromDateOfBirth:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+      required:
+        - Date
+      xml:
+        name: FromDateOfBirth
+    GeoObjectList:
+      type: object
+      properties:
+        GeoObject:
+          type: array
+          items:
+            type: object
+            properties:
+              Id:
+                type: integer
+              EntityType:
+                type: string
+              EntityId:
+                type: integer
+              ObjectType:
+                type: string
+              Latitude:
+                type: number
+                format: double
+              Longitude:
+                type: number
+                format: double
+              Data:
+                $ref: '#/components/schemas/Data'
+            required:
+              - EntityId
+              - EntityType
+              - Id
+              - Latitude
+              - Longitude
+              - ObjectType
+          xml:
+            name: GeoObject
+            wrapped: false
+      xml:
+        name: GeoObjectList
+    Given:
+      type: object
+      properties:
+        _text:
+          type: string
+        sequence:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: Given
+    HashTableEntry:
+      type: object
+      properties:
+        Key:
+          $ref: '#/components/schemas/Key'
+        Value:
+          $ref: '#/components/schemas/Value'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        entity:
+          type: string
+          enum:
+            - Persons
+            - Organisations
+            - Events
+            - BaseClasses
+            - EventClasses
+            - RaceClasses
+          xml:
+            attribute: true
+        id:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - Key
+        - Value
+      xml:
+        name: HashTableEntry
+    HashTableEntryList:
+      type: object
+      properties:
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+      xml:
+        name: HashTableEntryList
+    ImportResponse:
+      type: object
+      properties:
+        Error:
+          type: array
+          items:
+            type: string
+          xml:
+            name: Error
+            wrapped: false
+        Warning:
+          type: array
+          items:
+            type: string
+          xml:
+            name: Warning
+            wrapped: false
+        status:
+          type: string
+          enum:
+            - OK
+            - Error
+            - Warning
+          xml:
+            attribute: true
+      required:
+        - status
+      xml:
+        name: ImportResponse
+    ImportResultListResult:
+      type: object
+      properties:
+        ResultListUrl:
+          type: string
+        SplitTimeListUrl:
+          type: string
+      required:
+        - ResultListUrl
+      xml:
+        name: ImportResultListResult
+    ImportStartListResult:
+      type: object
+      properties:
+        StartListUrl:
+          type: string
+      required:
+        - StartListUrl
+      xml:
+        name: ImportStartListResult
+    Information:
+      type: string
+      xml:
+        name: Information
+    Key:
+      type: string
+      xml:
+        name: Key
+    LiveEventInformationList:
+      type: object
+      properties:
+        LiveEventInformation:
+          type: array
+          items:
+            type: object
+            properties:
+              Id:
+                type: integer
+              EventId:
+                $ref: '#/components/schemas/EventId'
+              EventRaceId:
+                $ref: '#/components/schemas/EventRaceId'
+              RaceNumber:
+                type: integer
+              EventName:
+                type: string
+              StartTime:
+                $ref: '#/components/schemas/StartTime'
+              EndTime:
+                type: string
+                format: date-time
+              Message:
+                type: string
+              Link:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Type:
+                      type: string
+                      enum:
+                        - LiveResultList
+                        - OfficialResultList
+                        - StartList
+                        - SplitTimes
+                        - EventInformation
+                        - Tracking
+                        - SpeakerSound
+                        - Pictures
+                        - Video
+                        - TextComments
+                        - Other
+                    Title:
+                      type: integer
+                    Url:
+                      type: string
+                  required:
+                    - Type
+                    - Url
+                xml:
+                  name: Link
+                  wrapped: false
+            required:
+              - EndTime
+              - Id
+              - StartTime
+          xml:
+            name: LiveEventInformation
+            wrapped: false
+      xml:
+        name: LiveEventInformationList
+    MaxNumber:
+      type: object
+      properties:
+        _text:
+          type: string
+        unit:
+          type: string
+          default: Pcs
+          xml:
+            attribute: true
+      xml:
+        name: MaxNumber
+    MediaName:
+      type: object
+      properties:
+        _text:
+          type: string
+        languageId:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: MediaName
+    MemberToDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: MemberToDate
+    MergedOrganisationList:
+      type: object
+      properties:
+        MergedOrganisation:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                xml:
+                  attribute: true
+              deletedOrganisationId:
+                type: integer
+                xml:
+                  attribute: true
+              keptOrganisationId:
+                type: integer
+                xml:
+                  attribute: true
+              time:
+                type: string
+                format: date-time
+                xml:
+                  attribute: true
+            required:
+              - deletedOrganisationId
+              - id
+              - keptOrganisationId
+              - time
+          xml:
+            name: MergedOrganisation
+            wrapped: false
+        createdTime:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      required:
+        - createdTime
+      xml:
+        name: MergedOrganisationList
+    MergedPersonList:
+      type: object
+      properties:
+        MergedPerson:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                xml:
+                  attribute: true
+              deletedPersonId:
+                type: integer
+                xml:
+                  attribute: true
+              keptPersonId:
+                type: integer
+                xml:
+                  attribute: true
+              time:
+                type: string
+                format: date-time
+                xml:
+                  attribute: true
+            required:
+              - deletedPersonId
+              - id
+              - keptPersonId
+              - time
+          xml:
+            name: MergedPerson
+            wrapped: false
+        createdTime:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      required:
+        - createdTime
+      xml:
+        name: MergedPersonList
+    ModifiedBy:
+      type: object
+      xml:
+        name: ModifiedBy
+    ModifyDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: ModifyDate
+    Name:
+      type: object
+      properties:
+        _text:
+          type: string
+        languageId:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: Name
+    Nationality:
+      type: object
+      properties:
+        CountryId:
+          $ref: '#/components/schemas/CountryId'
+        Country:
+          $ref: '#/components/schemas/Country'
+      required:
+        - Country
+        - CountryId
+      xml:
+        name: Nationality
+    OrderedBy:
+      type: object
+      xml:
+        name: OrderedBy
+    OrderedDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: OrderedDate
+    Organisation:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ShortName:
+          $ref: '#/components/schemas/ShortName'
+        MediaName:
+          $ref: '#/components/schemas/MediaName'
+        Address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+          xml:
+            name: Address
+            wrapped: false
+        Tele:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tele'
+          xml:
+            name: Tele
+            wrapped: false
+        ParentOrganisation:
+          $ref: '#/components/schemas/ParentOrganisation'
+        SubOrganisation:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubOrganisation'
+          xml:
+            name: SubOrganisation
+            wrapped: false
+        OrganisationOfficial:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationOfficial'
+          xml:
+            name: OrganisationOfficial
+            wrapped: false
+        CreateDate:
+          $ref: '#/components/schemas/CreateDate'
+        MemberToDate:
+          $ref: '#/components/schemas/MemberToDate'
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - CreateDate
+        - MemberToDate
+        - ShortName
+      xml:
+        name: Organisation
+    OrganisationCompetitorCount:
+      type: object
+      properties:
+        organisationId:
+          type: string
+          xml:
+            attribute: true
+        numberOfEntries:
+          type: string
+          xml:
+            attribute: true
+        numberOfStarts:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: OrganisationCompetitorCount
+    OrganisationId:
+      type: string
+      xml:
+        name: OrganisationId
+    OrganisationList:
+      type: object
+      properties:
+        OrganisationType:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationType'
+          xml:
+            name: OrganisationType
+            wrapped: false
+        Organisation:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation'
+          xml:
+            name: Organisation
+            wrapped: false
+      xml:
+        name: OrganisationList
+    OrganisationMembershipList:
+      type: object
+      properties:
+        OrganisationMemberships:
+          type: array
+          items:
+            type: object
+            properties:
+              Organisation:
+                $ref: '#/components/schemas/Organisation'
+              Membership:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Id:
+                      type: integer
+                    Year:
+                      type: integer
+                    Type:
+                      type: object
+                      properties:
+                        Id:
+                          type: integer
+                        Name:
+                          $ref: '#/components/schemas/Name'
+                        groupMembership:
+                          type: boolean
+                          default: 'false'
+                          xml:
+                            attribute: true
+                      required:
+                        - Id
+                        - Name
+                    Person:
+                      $ref: '#/components/schemas/Person'
+                    AppliedTime:
+                      type: string
+                      format: date-time
+                    PaidTime:
+                      type: string
+                      format: date-time
+                    PhoneNumber:
+                      type: string
+                    MobilePhoneNumber:
+                      type: string
+                    Email:
+                      type: string
+                    paid:
+                      type: boolean
+                      xml:
+                        attribute: true
+                    groupMembershipId:
+                      type: integer
+                      xml:
+                        attribute: true
+                  required:
+                    - AppliedTime
+                    - Email
+                    - Id
+                    - MobilePhoneNumber
+                    - PaidTime
+                    - Person
+                    - PhoneNumber
+                    - Type
+                    - Year
+                    - paid
+                xml:
+                  name: Membership
+                  wrapped: false
+            required:
+              - Organisation
+          xml:
+            name: OrganisationMemberships
+            wrapped: false
+      xml:
+        name: OrganisationMembershipList
+    OrganisationOfficial:
+      type: object
+      properties:
+        RoleType:
+          $ref: '#/components/schemas/RoleType'
+      required:
+        - RoleType
+      xml:
+        name: OrganisationOfficial
+    OrganisationServiceRequest:
+      type: object
+      properties:
+        ServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRequest'
+          xml:
+            name: ServiceRequest
+            wrapped: false
+        PersonServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonServiceRequest'
+          xml:
+            name: PersonServiceRequest
+            wrapped: false
+      xml:
+        name: OrganisationServiceRequest
+    OrganisationServiceRequestList:
+      type: object
+      properties:
+        OrganisationServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganisationServiceRequest'
+          xml:
+            name: OrganisationServiceRequest
+            wrapped: false
+      xml:
+        name: OrganisationServiceRequestList
+    OrganisationStatus:
+      type: object
+      properties:
+        OrganisationStatusId:
+          $ref: '#/components/schemas/OrganisationStatusId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - Name
+        - OrganisationStatusId
+      xml:
+        name: OrganisationStatus
+    OrganisationStatusId:
+      type: string
+      xml:
+        name: OrganisationStatusId
+    OrganisationType:
+      type: object
+      properties:
+        OrganisationTypeId:
+          $ref: '#/components/schemas/OrganisationTypeId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ParentOrganisationType:
+          $ref: '#/components/schemas/ParentOrganisationType'
+        SubOrganisationType:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubOrganisationType'
+          xml:
+            name: SubOrganisationType
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - Name
+        - OrganisationTypeId
+      xml:
+        name: OrganisationType
+    OrganisationTypeId:
+      type: string
+      xml:
+        name: OrganisationTypeId
+    Organiser:
+      type: object
+      properties:
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      xml:
+        name: Organiser
+    OverallResult:
+      type: object
+      properties:
+        Time:
+          $ref: '#/components/schemas/Time'
+        TimeDiff:
+          $ref: '#/components/schemas/TimeDiff'
+        ResultPosition:
+          $ref: '#/components/schemas/ResultPosition'
+        TeamStatus:
+          $ref: '#/components/schemas/TeamStatus'
+      required:
+        - TeamStatus
+      xml:
+        name: OverallResult
+    PaidAmount:
+      type: object
+      properties:
+        _text:
+          type: string
+        currency:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: PaidAmount
+    ParentEvent:
+      type: object
+      properties:
+        EventId:
+          $ref: '#/components/schemas/EventId'
+        Event:
+          $ref: '#/components/schemas/Event'
+      required:
+        - Event
+        - EventId
+      xml:
+        name: ParentEvent
+    ParentOrganisation:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        Organisation:
+          $ref: '#/components/schemas/Organisation'
+      required:
+        - Organisation
+        - OrganisationId
+      xml:
+        name: ParentOrganisation
+    ParentOrganisationType:
+      type: object
+      properties:
+        OrganisationTypeId:
+          $ref: '#/components/schemas/OrganisationTypeId'
+        OrganisationType:
+          $ref: '#/components/schemas/OrganisationType'
+      required:
+        - OrganisationType
+        - OrganisationTypeId
+      xml:
+        name: ParentOrganisationType
+    Password:
+      type: string
+      xml:
+        name: Password
+    Person:
+      type: object
+      properties:
+        PersonName:
+          $ref: '#/components/schemas/PersonName'
+        PersonId:
+          $ref: '#/components/schemas/PersonId'
+        BirthDate:
+          $ref: '#/components/schemas/BirthDate'
+        SSN:
+          $ref: '#/components/schemas/SSN'
+        Address:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+          xml:
+            name: Address
+            wrapped: false
+        Tele:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tele'
+          xml:
+            name: Tele
+            wrapped: false
+        Nationality:
+          $ref: '#/components/schemas/Nationality'
+        Role:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+          xml:
+            name: Role
+            wrapped: false
+        User:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+          xml:
+            name: User
+            wrapped: false
+        HashTableEntry:
+          type: array
+          items:
+            $ref: '#/components/schemas/HashTableEntry'
+          xml:
+            name: HashTableEntry
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        Competitor:
+          type: array
+          items:
+            $ref: '#/components/schemas/Competitor'
+          xml:
+            name: Competitor
+            wrapped: false
+        ExternalPersonId:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalPersonId'
+          xml:
+            name: ExternalPersonId
+            wrapped: false
+        sex:
+          type: string
+          enum:
+            - F
+            - M
+          xml:
+            attribute: true
+      required:
+        - Nationality
+        - PersonName
+      xml:
+        name: Person
+    PersonId:
+      type: string
+      xml:
+        name: PersonId
+    PersonList:
+      type: object
+      properties:
+        Person:
+          type: array
+          items:
+            $ref: '#/components/schemas/Person'
+          xml:
+            name: Person
+            wrapped: false
+      xml:
+        name: PersonList
+    PersonName:
+      type: object
+      properties:
+        Family:
+          $ref: '#/components/schemas/Family'
+        Given:
+          type: array
+          items:
+            $ref: '#/components/schemas/Given'
+          xml:
+            name: Given
+            wrapped: false
+      required:
+        - Family
+      xml:
+        name: PersonName
+    PersonResult:
+      type: object
+      properties:
+        RaceResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/RaceResult'
+          xml:
+            name: RaceResult
+            wrapped: false
+      xml:
+        name: PersonResult
+    PersonServiceRequest:
+      type: object
+      properties:
+        ServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRequest'
+          xml:
+            name: ServiceRequest
+            wrapped: false
+      xml:
+        name: PersonServiceRequest
+    PersonServiceRequestList:
+      type: object
+      properties:
+        PersonServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonServiceRequest'
+          xml:
+            name: PersonServiceRequest
+            wrapped: false
+      xml:
+        name: PersonServiceRequestList
+    PersonStart:
+      type: object
+      xml:
+        name: PersonStart
+    Point:
+      type: object
+      properties:
+        type:
+          type: string
+          xml:
+            attribute: true
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - type
+        - value
+      xml:
+        name: Point
+    Position:
+      type: string
+      xml:
+        name: Position
+    PreSelectedClass:
+      type: object
+      properties:
+        BaseClassId:
+          $ref: '#/components/schemas/BaseClassId'
+        ClassShortName:
+          $ref: '#/components/schemas/ClassShortName'
+        BaseClass:
+          $ref: '#/components/schemas/BaseClass'
+        sequence:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - BaseClass
+        - BaseClassId
+        - ClassShortName
+      xml:
+        name: PreSelectedClass
+    PunchingUnitType:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - manual
+            - Emit
+            - SI
+            - emiTag
+            - other
+            - ToePunch
+            - Huichang
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: PunchingUnitType
+    RaceClassId:
+      type: string
+      xml:
+        name: RaceClassId
+    RaceDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: RaceDate
+    RacePunchingUnit:
+      type: object
+      properties:
+        EventClassId:
+          $ref: '#/components/schemas/EventClassId'
+        RacePunchingUnitId:
+          $ref: '#/components/schemas/RacePunchingUnitId'
+      required:
+        - EventClassId
+        - RacePunchingUnitId
+      xml:
+        name: RacePunchingUnit
+    RacePunchingUnitId:
+      type: string
+      xml:
+        name: RacePunchingUnitId
+    RacePunchingUnits:
+      type: object
+      properties:
+        RacePunchingUnit:
+          type: array
+          items:
+            $ref: '#/components/schemas/RacePunchingUnit'
+          xml:
+            name: RacePunchingUnit
+            wrapped: false
+      xml:
+        name: RacePunchingUnits
+    RaceResult:
+      type: object
+      xml:
+        name: RaceResult
+    RaceStart:
+      type: object
+      properties:
+        Start:
+          $ref: '#/components/schemas/Start'
+      required:
+        - Start
+      xml:
+        name: RaceStart
+    RaceStatus:
+      type: object
+      properties:
+        RaceStatusId:
+          $ref: '#/components/schemas/RaceStatusId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - Name
+        - RaceStatusId
+      xml:
+        name: RaceStatus
+    RaceStatusId:
+      type: string
+      xml:
+        name: RaceStatusId
+    RequestedQuantity:
+      type: object
+      properties:
+        _text:
+          type: string
+        unit:
+          type: string
+          default: Pcs
+          xml:
+            attribute: true
+      xml:
+        name: RequestedQuantity
+    ResponsibleOrganisationId:
+      type: string
+      xml:
+        name: ResponsibleOrganisationId
+    Result:
+      type: object
+      properties:
+        ResultId:
+          $ref: '#/components/schemas/ResultId'
+        StartNumber:
+          $ref: '#/components/schemas/StartNumber'
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        StartTime:
+          $ref: '#/components/schemas/StartTime'
+        FinishTime:
+          $ref: '#/components/schemas/FinishTime'
+        Time:
+          $ref: '#/components/schemas/Time'
+        TimeDiff:
+          $ref: '#/components/schemas/TimeDiff'
+        ResultPosition:
+          $ref: '#/components/schemas/ResultPosition'
+        CompetitorStatus:
+          $ref: '#/components/schemas/CompetitorStatus'
+        TeamSequence:
+          $ref: '#/components/schemas/TeamSequence'
+        SplitTime:
+          type: array
+          items:
+            $ref: '#/components/schemas/SplitTime'
+          xml:
+            name: SplitTime
+            wrapped: false
+        Point:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+          xml:
+            name: Point
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        ChampionshipResults:
+          $ref: '#/components/schemas/ChampionshipResults'
+      required:
+        - CompetitorStatus
+      xml:
+        name: Result
+    ResultId:
+      type: string
+      xml:
+        name: ResultId
+    ResultList:
+      type: object
+      properties:
+        ClassResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassResult'
+          xml:
+            name: ClassResult
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        status:
+          type: string
+          enum:
+            - complete
+            - delta
+            - snapshot
+          default: complete
+          xml:
+            attribute: true
+      xml:
+        name: ResultList
+    ResultListList:
+      type: object
+      properties:
+        ResultList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResultList'
+          xml:
+            name: ResultList
+            wrapped: false
+      xml:
+        name: ResultListList
+    ResultPosition:
+      type: string
+      xml:
+        name: ResultPosition
+    Resultlists:
+      type: object
+      xml:
+        name: Resultlists
+    Role:
+      type: object
+      xml:
+        name: Role
+    RoleType:
+      type: object
+      properties:
+        RoleTypeId:
+          $ref: '#/components/schemas/RoleTypeId'
+        Name:
+          $ref: '#/components/schemas/Name'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        type:
+          type: string
+          enum:
+            - OrganisationRoleType
+            - EventRoleType
+          default: OrganisationRoleType
+          xml:
+            attribute: true
+      required:
+        - Name
+        - RoleTypeId
+      xml:
+        name: RoleType
+    RoleTypeId:
+      type: string
+      xml:
+        name: RoleTypeId
+    RoleTypeList:
+      type: object
+      properties:
+        RoleType:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleType'
+          xml:
+            name: RoleType
+            wrapped: false
+      xml:
+        name: RoleTypeList
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+          xml:
+            attribute: true
+        eventRaceId:
+          type: integer
+          xml:
+            attribute: true
+        personId:
+          type: integer
+          xml:
+            attribute: true
+        personFirstName:
+          type: string
+          xml:
+            attribute: true
+        personLastName:
+          type: string
+          xml:
+            attribute: true
+        organisationId:
+          type: integer
+          xml:
+            attribute: true
+        organisationName:
+          type: string
+          xml:
+            attribute: true
+        raceClassId:
+          type: integer
+          xml:
+            attribute: true
+        raceClassName:
+          type: string
+          xml:
+            attribute: true
+        modifiedBy:
+          type: integer
+          xml:
+            attribute: true
+        modifyTime:
+          type: string
+          format: date-time
+          xml:
+            attribute: true
+      required:
+        - eventRaceId
+        - id
+        - modifyTime
+        - personFirstName
+        - personId
+        - personLastName
+        - raceClassId
+        - raceClassName
+      xml:
+        name: Route
+    RouteCount:
+      type: object
+      properties:
+        eventRaceId:
+          type: integer
+          xml:
+            attribute: true
+        count:
+          type: integer
+          xml:
+            attribute: true
+      required:
+        - count
+        - eventRaceId
+      xml:
+        name: RouteCount
+    RouteCountList:
+      type: object
+      properties:
+        RouteCount:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouteCount'
+          xml:
+            name: RouteCount
+            wrapped: false
+      xml:
+        name: RouteCountList
+    RouteList:
+      type: object
+      properties:
+        Route:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+          xml:
+            name: Route
+            wrapped: false
+      xml:
+        name: RouteList
+    SSN:
+      type: string
+      xml:
+        name: SSN
+    Sequence:
+      type: string
+      xml:
+        name: Sequence
+    Service:
+      type: object
+      properties:
+        ServiceId:
+          $ref: '#/components/schemas/ServiceId'
+        Name:
+          type: array
+          items:
+            $ref: '#/components/schemas/Name'
+          xml:
+            name: Name
+            wrapped: false
+        ShortName:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShortName'
+          xml:
+            name: ShortName
+            wrapped: false
+        Comment:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          xml:
+            name: Comment
+            wrapped: false
+        MaxNumber:
+          $ref: '#/components/schemas/MaxNumber'
+        EventId:
+          $ref: '#/components/schemas/EventId'
+        ServiceFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceFee'
+          xml:
+            name: ServiceFee
+            wrapped: false
+        ServiceRequest:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRequest'
+          xml:
+            name: ServiceRequest
+            wrapped: false
+        ValidRoles:
+          $ref: '#/components/schemas/ValidRoles'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - EventId
+        - ServiceId
+      xml:
+        name: Service
+    ServiceFee:
+      type: object
+      properties:
+        ServiceFeeId:
+          $ref: '#/components/schemas/ServiceFeeId'
+        Amount:
+          $ref: '#/components/schemas/Amount'
+        ValidFromDate:
+          $ref: '#/components/schemas/ValidFromDate'
+        ValidToDate:
+          $ref: '#/components/schemas/ValidToDate'
+        FromDateOfBirth:
+          $ref: '#/components/schemas/FromDateOfBirth'
+        ToDateOfBirth:
+          $ref: '#/components/schemas/ToDateOfBirth'
+      required:
+        - Amount
+        - ServiceFeeId
+      xml:
+        name: ServiceFee
+    ServiceFeeId:
+      type: string
+      xml:
+        name: ServiceFeeId
+    ServiceId:
+      type: string
+      xml:
+        name: ServiceId
+    ServiceList:
+      type: object
+      properties:
+        Service:
+          type: array
+          items:
+            $ref: '#/components/schemas/Service'
+          xml:
+            name: Service
+            wrapped: false
+      xml:
+        name: ServiceList
+    ServiceRequest:
+      type: object
+      properties:
+        ServiceRequestId:
+          $ref: '#/components/schemas/ServiceRequestId'
+        PersonResult:
+          $ref: '#/components/schemas/PersonResult'
+        ServiceRequestFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRequestFee'
+          xml:
+            name: ServiceRequestFee
+            wrapped: false
+        RequestedQuantity:
+          $ref: '#/components/schemas/RequestedQuantity'
+        Comment:
+          $ref: '#/components/schemas/Comment'
+        Data:
+          $ref: '#/components/schemas/Data'
+        OrderedBy:
+          $ref: '#/components/schemas/OrderedBy'
+        OrderedDate:
+          $ref: '#/components/schemas/OrderedDate'
+        CreatedBy:
+          $ref: '#/components/schemas/CreatedBy'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - RequestedQuantity
+        - ServiceRequestId
+      xml:
+        name: ServiceRequest
+    ServiceRequestFee:
+      type: object
+      properties:
+        Amount:
+          $ref: '#/components/schemas/Amount'
+        PaidAmount:
+          $ref: '#/components/schemas/PaidAmount'
+      required:
+        - Amount
+        - PaidAmount
+      xml:
+        name: ServiceRequestFee
+    ServiceRequestId:
+      type: string
+      xml:
+        name: ServiceRequestId
+    ServiceRequestList:
+      type: object
+      xml:
+        name: ServiceRequestList
+    ServiceType:
+      type: object
+      properties:
+        ServiceTypeId:
+          $ref: '#/components/schemas/ServiceTypeId'
+        Name:
+          type: array
+          items:
+            $ref: '#/components/schemas/Name'
+          xml:
+            name: Name
+            wrapped: false
+      required:
+        - ServiceTypeId
+      xml:
+        name: ServiceType
+    ServiceTypeId:
+      type: object
+      properties:
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: ServiceTypeId
+    ShortName:
+      type: object
+      properties:
+        _text:
+          type: string
+        languageId:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: ShortName
+    SplitTime:
+      type: object
+      properties:
+        Time:
+          $ref: '#/components/schemas/Time'
+        sequence:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - sequence
+      xml:
+        name: SplitTime
+    Start:
+      type: object
+      properties:
+        StartNumber:
+          $ref: '#/components/schemas/StartNumber'
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        StartTime:
+          $ref: '#/components/schemas/StartTime'
+        TeamSequence:
+          $ref: '#/components/schemas/TeamSequence'
+        CourseLength:
+          $ref: '#/components/schemas/CourseLength'
+        StartId:
+          $ref: '#/components/schemas/StartId'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      required:
+        - CourseLength
+      xml:
+        name: Start
+    StartDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: StartDate
+    StartId:
+      type: string
+      xml:
+        name: StartId
+    StartList:
+      type: object
+      properties:
+        ClassStart:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassStart'
+          xml:
+            name: ClassStart
+            wrapped: false
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+      xml:
+        name: StartList
+    StartListList:
+      type: object
+      properties:
+        StartList:
+          type: array
+          items:
+            $ref: '#/components/schemas/StartList'
+          xml:
+            name: StartList
+            wrapped: false
+      xml:
+        name: StartListList
+    StartNumber:
+      type: string
+      xml:
+        name: StartNumber
+    StartTime:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Clock
+      xml:
+        name: StartTime
+    StatisticalInquiryParam:
+      type: object
+      properties:
+        paramOrder:
+          type: string
+          xml:
+            attribute: true
+        paramValue:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: StatisticalInquiryParam
+    StatisticalReport:
+      type: object
+      properties:
+        StatisticalInquiryParam:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatisticalInquiryParam'
+          xml:
+            name: StatisticalInquiryParam
+            wrapped: false
+        StatisticalResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatisticalResult'
+          xml:
+            name: StatisticalResult
+            wrapped: false
+        reportname:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: StatisticalReport
+    StatisticalResult:
+      type: object
+      properties:
+        StatisticalResultRow:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatisticalResultRow'
+          xml:
+            name: StatisticalResultRow
+            wrapped: false
+        resultStatus:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: StatisticalResult
+    StatisticalResultColumn:
+      type: object
+      properties:
+        columnName:
+          type: string
+          xml:
+            attribute: true
+        columnValue:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: StatisticalResultColumn
+    StatisticalResultRow:
+      type: object
+      properties:
+        StatisticalResultColumn:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatisticalResultColumn'
+          xml:
+            name: StatisticalResultColumn
+            wrapped: false
+      xml:
+        name: StatisticalResultRow
+    SubOrganisation:
+      type: object
+      properties:
+        OrganisationId:
+          $ref: '#/components/schemas/OrganisationId'
+        Organisation:
+          $ref: '#/components/schemas/Organisation'
+      required:
+        - Organisation
+        - OrganisationId
+      xml:
+        name: SubOrganisation
+    SubOrganisationType:
+      type: object
+      properties:
+        OrganisationTypeId:
+          $ref: '#/components/schemas/OrganisationTypeId'
+        OrganisationType:
+          $ref: '#/components/schemas/OrganisationType'
+      required:
+        - OrganisationType
+        - OrganisationTypeId
+      xml:
+        name: SubOrganisationType
+    TeamCompetitor:
+      type: object
+      properties:
+        TeamCompetitorId:
+          $ref: '#/components/schemas/TeamCompetitorId'
+        CCard:
+          type: array
+          items:
+            $ref: '#/components/schemas/CCard'
+          xml:
+            name: CCard
+            wrapped: false
+        TeamSequence:
+          $ref: '#/components/schemas/TeamSequence'
+        TeamOrder:
+          $ref: '#/components/schemas/TeamOrder'
+        EntryEntryFee:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntryEntryFee'
+          xml:
+            name: EntryEntryFee
+            wrapped: false
+      required:
+        - TeamCompetitorId
+      xml:
+        name: TeamCompetitor
+    TeamCompetitorId:
+      type: string
+      xml:
+        name: TeamCompetitorId
+    TeamContact:
+      type: string
+      xml:
+        name: TeamContact
+    TeamMemberResult:
+      type: object
+      properties:
+        Person:
+          $ref: '#/components/schemas/Person'
+        Organisation:
+          $ref: '#/components/schemas/Organisation'
+        Leg:
+          type: integer
+        LegOrder:
+          type: integer
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        StartTime:
+          $ref: '#/components/schemas/StartTime'
+        FinishTime:
+          $ref: '#/components/schemas/FinishTime'
+        Time:
+          $ref: '#/components/schemas/Time'
+        TimeBehind:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - Leg
+                  - Course
+                xml:
+                  attribute: true
+            required:
+              - type
+          xml:
+            name: TimeBehind
+            wrapped: false
+        Position:
+          type: array
+          items:
+            $ref: '#/components/schemas/Position'
+          xml:
+            name: Position
+            wrapped: false
+        CompetitorStatus:
+          $ref: '#/components/schemas/CompetitorStatus'
+        SplitTime:
+          type: array
+          items:
+            $ref: '#/components/schemas/SplitTime'
+          xml:
+            name: SplitTime
+            wrapped: false
+        OverallResult:
+          $ref: '#/components/schemas/OverallResult'
+        CCardId:
+          type: array
+          items:
+            $ref: '#/components/schemas/CCardId'
+          xml:
+            name: CCardId
+            wrapped: false
+      required:
+        - CompetitorStatus
+      xml:
+        name: TeamMemberResult
+    TeamMemberStart:
+      type: object
+      properties:
+        Person:
+          $ref: '#/components/schemas/Person'
+        Organisation:
+          $ref: '#/components/schemas/Organisation'
+        Leg:
+          type: integer
+        LegOrder:
+          type: integer
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        StartTime:
+          $ref: '#/components/schemas/StartTime'
+        CCardId:
+          type: array
+          items:
+            $ref: '#/components/schemas/CCardId'
+          xml:
+            name: CCardId
+            wrapped: false
+      xml:
+        name: TeamMemberStart
+    TeamName:
+      type: string
+      xml:
+        name: TeamName
+    TeamOrder:
+      type: string
+      xml:
+        name: TeamOrder
+    TeamResult:
+      type: object
+      properties:
+        TeamName:
+          $ref: '#/components/schemas/TeamName'
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        StartTime:
+          $ref: '#/components/schemas/StartTime'
+        FinishTime:
+          $ref: '#/components/schemas/FinishTime'
+        Time:
+          $ref: '#/components/schemas/Time'
+        TimeDiff:
+          $ref: '#/components/schemas/TimeDiff'
+        ResultPosition:
+          $ref: '#/components/schemas/ResultPosition'
+        TeamStatus:
+          $ref: '#/components/schemas/TeamStatus'
+        Point:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+          xml:
+            name: Point
+            wrapped: false
+        TeamMemberResult:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMemberResult'
+          xml:
+            name: TeamMemberResult
+            wrapped: false
+      required:
+        - TeamName
+        - TeamStatus
+      xml:
+        name: TeamResult
+    TeamSequence:
+      type: string
+      xml:
+        name: TeamSequence
+    TeamStart:
+      type: object
+      properties:
+        TeamName:
+          $ref: '#/components/schemas/TeamName'
+        BibNumber:
+          $ref: '#/components/schemas/BibNumber'
+        StartTime:
+          $ref: '#/components/schemas/StartTime'
+        TeamMemberStart:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamMemberStart'
+          xml:
+            name: TeamMemberStart
+            wrapped: false
+      required:
+        - TeamName
+      xml:
+        name: TeamStart
+    TeamStatus:
+      type: object
+      properties:
+        value:
+          type: string
+          enum:
+            - Inactive
+            - MisPunch
+            - DidNotStart
+            - MovedUp
+            - OverTime
+            - Moved
+            - Active
+            - Disqualified
+            - DidNotFinish
+            - Cancelled
+            - SportWithdr
+            - OK
+            - NotCompeting
+            - Finished
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: TeamStatus
+    Tele:
+      type: object
+      properties:
+        TeleType:
+          $ref: '#/components/schemas/TeleType'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        phoneNumber:
+          type: string
+          xml:
+            attribute: true
+        faxNumber:
+          type: string
+          xml:
+            attribute: true
+        mobilePhoneNumber:
+          type: string
+          xml:
+            attribute: true
+        mailAddress:
+          type: string
+          xml:
+            attribute: true
+        webURL:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: Tele
+    TeleType:
+      type: object
+      properties:
+        value:
+          type: string
+          xml:
+            attribute: true
+      required:
+        - value
+      xml:
+        name: TeleType
+    Text:
+      type: object
+      properties:
+        _text:
+          type: string
+        languageId:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: Text
+    Time:
+      type: object
+      properties:
+        _text:
+          type: string
+        timeFormat:
+          type: string
+          default: 'MM:SS'
+          xml:
+            attribute: true
+      xml:
+        name: Time
+    TimeDiff:
+      type: object
+      properties:
+        _text:
+          type: string
+        timeFormat:
+          type: string
+          default: 'MM:SS'
+          xml:
+            attribute: true
+      xml:
+        name: TimeDiff
+    TimeMode:
+      type: string
+      enum:
+        - Utc
+        - Local
+      xml:
+        name: TimeMode
+    ToDateOfBirth:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+      required:
+        - Date
+      xml:
+        name: ToDateOfBirth
+    User:
+      type: object
+      properties:
+        UserName:
+          $ref: '#/components/schemas/UserName'
+        Password:
+          $ref: '#/components/schemas/Password'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        numberOfAttempts:
+          type: string
+          xml:
+            attribute: true
+        userType:
+          type: string
+          enum:
+            - eventor
+            - ias
+          default: eventor
+          xml:
+            attribute: true
+      required:
+        - UserName
+      xml:
+        name: User
+    UserName:
+      type: string
+      xml:
+        name: UserName
+    ValidFromDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: ValidFromDate
+    ValidRoles:
+      type: string
+      xml:
+        name: ValidRoles
+    ValidToDate:
+      type: object
+      properties:
+        Date:
+          $ref: '#/components/schemas/Date'
+        Clock:
+          $ref: '#/components/schemas/Clock'
+      required:
+        - Date
+      xml:
+        name: ValidToDate
+    Value:
+      type: string
+      xml:
+        name: Value
+    WebURL:
+      type: string
+      xml:
+        name: WebURL
+    WrsResultList:
+      type: object
+      properties:
+        Championships:
+          $ref: '#/components/schemas/Championships'
+        Resultlists:
+          $ref: '#/components/schemas/Resultlists'
+        ModifyDate:
+          $ref: '#/components/schemas/ModifyDate'
+        ModifiedBy:
+          $ref: '#/components/schemas/ModifiedBy'
+        status:
+          type: string
+          enum:
+            - complete
+            - delta
+            - snapshot
+          default: complete
+          xml:
+            attribute: true
+      xml:
+        name: WrsResultList
 security:
   - ApiKeyAuth: []
 
@@ -101,14 +4285,8 @@ paths:
           description: XML element `EventList`
           content:
             application/xml:
-              schema: 
-                type: array # TODO
-                xml:
-                  name: EventList
-                  wrapped: true
-                items:
-                  xml:
-                    name: Event
+              schema:
+                $ref: '#/components/schemas/EventList'
 
   /events/documents:
     get:
@@ -203,7 +4381,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Event'
 
   /eventclasses:
     get:
@@ -228,7 +4406,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/EventClassList'
 
   /entryfees/events/{eventId}:
     get:
@@ -247,7 +4425,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/EntryFeeList'
 
   /organisation/apiKey:
     get:
@@ -258,7 +4436,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Organisation'
 
   /organisations:
     get:
@@ -276,7 +4454,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/OrganisationList'
 
   /organisation/{id}:
     get:
@@ -295,7 +4473,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Organisation'
 
   /persons/organisations/{organisationId}:
     get:
@@ -332,7 +4510,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/PersonList'
 
   /competitors:
     get:
@@ -351,7 +4529,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/CompetitorList'
 
   /externalLoginUrl:
     get:
@@ -383,7 +4561,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/ExternalLoginUrl'
 
   /authenticatePerson:
     get:
@@ -409,7 +4587,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Person'
 
   /entries:
     get:
@@ -499,7 +4677,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/EntryList'
 
   /competitorcount:
     get:
@@ -530,7 +4708,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/CompetitorCountList'
 
   /starts/event:
     get:
@@ -549,7 +4727,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/StartList'
 
   /starts/event/iofxml:
     get:
@@ -574,7 +4752,8 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                type: string
+                description: IOF XML 3.0 format — see IOF XSD for schema
 
   /starts/person:
     get:
@@ -611,7 +4790,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/StartListList'
 
   /starts/organisation:
     get:
@@ -637,7 +4816,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/StartList'
 
   /results/event:
     get:
@@ -667,7 +4846,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/ResultList'
 
   /results/event/iofxml:
     get:
@@ -704,7 +4883,8 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                type: string
+                description: IOF XML 3.0 format — see IOF XSD for schema
 
   /results/person:
     get:
@@ -752,7 +4932,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/ResultListList'
 
   /results/organisation:
     get:
@@ -790,7 +4970,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/ResultList'
 
   /activities:
     get:
@@ -829,7 +5009,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/ActivityList'
 
   /activity:
     get:
@@ -861,7 +5041,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Activity'
 
   /competitor/{competitorId}:
     get:
@@ -880,7 +5060,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Competitor'
 
 
   /competitor:
@@ -892,14 +5072,14 @@ paths:
         content:
           application/xml:
             schema:
-              type: string # TODO
+              $ref: '#/components/schemas/Competitor'
       responses:
         "200":
           description: XML element `Competitor`
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/Competitor'
               example: |
                 <Competitor>
                   <Person sex="F">
@@ -965,7 +5145,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/CompetitorList'
 
   /import/startlist:
     post:
@@ -977,14 +5157,14 @@ paths:
         content:
           application/xml:
             schema:
-              type: string # TODO
+              $ref: '#/components/schemas/StartList'
       responses:
         '200':
           description: XML element `StartList`
           content:
             application/xml:
               schema:
-                type: string # TODO
+                $ref: '#/components/schemas/ImportStartListResult'
 
   /import/resultlist:
     post:
@@ -996,10 +5176,10 @@ paths:
           content:
             application/xml:
               schema:
-                type: string
-                example: |
-                  <?xml version="1.0" encoding="utf-8"?>
-                  <ImportResultListResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                $ref: '#/components/schemas/ImportResultListResult'
+              example: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <ImportResultListResult xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                     <ResultListUrl>https://eventor.orientering.no/Events/ResultList?eventId=15455&amp;groupBy=EventClass</ResultListUrl>
                     <SplitTimeListUrl>http://obasen.orientering.se/winsplits/online/no/default.asp?page=classes&amp;databaseId=76549</SplitTimeListUrl>
                   </ImportResultListResult>
