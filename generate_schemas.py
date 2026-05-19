@@ -60,13 +60,16 @@ EXTRA_SCHEMAS_YAML = """\
         prefix: eventor
     EventorDiscipline:
       type: string
-      description: Eventor's discipline classification for the event or race.
+      description: |
+        Eventor's discipline classification for the event or race.
+        May appear multiple times on the same parent — the value set lists every
+        discipline the event/race accommodates.
       enum:
         - Foot
-        - MTB
+        - MountainBike
         - Ski
         - Trail
-        - PreO
+        - Indoor
       xml:
         name: Discipline
         namespace: http://eventor.orientering.se/iofxmlextensions
@@ -77,19 +80,25 @@ EXTRA_SCHEMAS_YAML = """\
       enum:
         - Day
         - Night
+        - DayAndNight
       xml:
         name: LightCondition
         namespace: http://eventor.orientering.se/iofxmlextensions
         prefix: eventor
     EventorAttribute:
       type: object
-      description: A custom event attribute defined by the Eventor instance (e.g. `Flexoløp`).
+      description: |
+        A custom event attribute defined by the Eventor instance. The set of
+        attributes is instance-specific — e.g. the Norwegian Eventor exposes
+        attributes like `Flexoløp`, `Ukas løype` and `Paratilbud`.
       properties:
         _text:
           type: string
           description: Human-readable attribute name.
+          example: Ukas løype
         id:
           type: integer
+          example: 2
           xml:
             attribute: true
       required:
@@ -107,8 +116,13 @@ EXTRA_SCHEMAS_YAML = """\
 
         Which children appear depends on the parent IOF element:
 
-        - On `Event`: `StartListExists`, `ResultListExists`, `Discipline`, zero or more `Attribute`.
-        - On `Race`: `EventRaceId`, `StartListExists`, `ResultListExists`, `Discipline`, `LightCondition`.
+        - On `Event`: `StartListExists`, `ResultListExists`, zero or more
+          `Discipline`, zero or more `Attribute`.
+        - On `Race`: `EventRaceId`, `StartListExists`, `ResultListExists`,
+          zero or more `Discipline`, `LightCondition`.
+
+        `Discipline` is repeatable — an event/race that allows multiple
+        disciplines lists each one as a separate element.
 
         These extensions are not part of the public IOF XSD — see the IOF
         datastandard repository for the IOF-defined part of the response:
@@ -121,7 +135,14 @@ EXTRA_SCHEMAS_YAML = """\
         ResultListExists:
           $ref: '#/components/schemas/EventorResultListExists'
         Discipline:
-          $ref: '#/components/schemas/EventorDiscipline'
+          type: array
+          items:
+            $ref: '#/components/schemas/EventorDiscipline'
+          xml:
+            name: Discipline
+            namespace: http://eventor.orientering.se/iofxmlextensions
+            prefix: eventor
+            wrapped: false
         LightCondition:
           $ref: '#/components/schemas/EventorLightCondition'
         Attribute:
@@ -130,6 +151,8 @@ EXTRA_SCHEMAS_YAML = """\
             $ref: '#/components/schemas/EventorAttribute'
           xml:
             name: Attribute
+            namespace: http://eventor.orientering.se/iofxmlextensions
+            prefix: eventor
             wrapped: false
       xml:
         name: Extensions
