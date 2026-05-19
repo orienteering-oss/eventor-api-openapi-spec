@@ -4288,6 +4288,159 @@ paths:
               schema:
                 $ref: '#/components/schemas/EventList'
 
+  /events/iofxml:
+    get:
+      summary: Returns events matching the search parameters in IOF XML 3.0 format.
+      description: |
+        Same filtering as `/events`, but the response is in IOF XML 3.0
+        format (with Eventor-specific data carried in `<Extensions>` elements
+        under the `http://eventor.orientering.se/iofxmlextensions` namespace).
+
+        Officially listed on the Australian and International API documentation
+        pages, but also works on the Norwegian and Swedish instances.
+        Note: requesting without any filter (e.g. only `fromDate`/`toDate`)
+        may return an error — supply at least `organisationIds` or `eventIds`.
+      parameters:
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Start time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: End time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromModifyDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Includes only events that have changed after this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toModifyDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: Includes only events that have changed before this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+            example: 8248,15365
+          description: Comma-separated list of event IDs. Omit to include all events.
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+            example: "273,89"
+          description: Comma-separated list of organisation IDs for the organising clubs.
+        - in: query
+          name: classificationIds
+          schema:
+            type: string
+            example: "4,5"
+          description: Comma-separated list of event classification IDs (1=championship, 2=national, 3=state, 4=local, 5=club, 6=international).
+        - in: query
+          name: includeEntryBreaks
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the entry deadlines of the event.
+        - in: query
+          name: includeAttributes
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the event's event attributes.
+        - in: query
+          name: parentIds
+          schema:
+            type: string
+            example: 1,2
+          description: If filtering on parent events, comma-separated list of IDs for parent events.
+      responses:
+        "200":
+          description: IOF XML 3.0 `EventList`
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: IOF XML 3.0 format — see IOF XSD for schema. Eventor-specific data is in `<Extensions>` elements (namespace `http://eventor.orientering.se/iofxmlextensions`).
+
+  /wrsevents:
+    get:
+      summary: Returns events that have at least one race linked to a WRS (World Ranking System) event.
+      description: |
+        Only available on the International Eventor instance
+        (`eventor.orienteering.sport`).
+      parameters:
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Start time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: End time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: fromModifyDate
+          schema:
+            type: string
+            default: "0000-01-01 00:00:00"
+          description: Includes only events that have changed after this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: toModifyDate
+          schema:
+            type: string
+            default: "9999-12-31 23:59:59"
+          description: Includes only events that have changed before this time (yyyy-mm-dd hh:mm:ss).
+        - in: query
+          name: eventIds
+          schema:
+            type: string
+          description: Comma-separated list of event IDs.
+        - in: query
+          name: organisationIds
+          schema:
+            type: string
+          description: Comma-separated list of organising organisation IDs.
+        - in: query
+          name: classificationIds
+          schema:
+            type: string
+          description: Comma-separated list of event classification IDs.
+        - in: query
+          name: includeEntryBreaks
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the entry deadlines of the event.
+        - in: query
+          name: includeAttributes
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the event's event attributes.
+        - in: query
+          name: parentIds
+          schema:
+            type: string
+          description: If filtering on parent events, comma-separated list of IDs for parent events.
+      responses:
+        "200":
+          description: XML element `EventList`
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EventList'
+
   /events/documents:
     get:
       summary: Returns a list with documents for the events matching the search parameters.
@@ -4383,6 +4536,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/Event'
 
+  /event/iofxml/{eventId}:
+    get:
+      summary: Returns a single event in IOF XML 3.0 format.
+      description: |
+        IOF XML 3.0 variant of `/event/{eventId}`. Eventor-specific data is
+        carried in `<Extensions>` elements (namespace
+        `http://eventor.orientering.se/iofxmlextensions`).
+
+        Officially listed on the Australian and International API
+        documentation pages, but also works on the Norwegian and Swedish
+        instances.
+      parameters:
+        - in: path
+          name: eventId
+          schema:
+            type: integer
+            example: 8248
+          required: true
+          description: The ID of the event as specified by `/events`.
+      responses:
+        "200":
+          description: IOF XML 3.0 `EventList` with a single `Event`
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: IOF XML 3.0 format — see IOF XSD for schema. Eventor-specific data is in `<Extensions>` elements.
+
   /eventclasses:
     get:
       summary: Returns all classes in an event.
@@ -4455,6 +4636,33 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/OrganisationList'
+
+  /organisations/iofxml:
+    get:
+      summary: Returns all organisations in IOF XML 3.0 format.
+      description: |
+        IOF XML 3.0 variant of `/organisations`. Eventor-specific data is
+        carried in `<Extensions>` elements (namespace
+        `http://eventor.orientering.se/iofxmlextensions`).
+
+        Officially listed on the Australian and International API
+        documentation pages, but also works on the Norwegian and Swedish
+        instances.
+      parameters:
+        - in: query
+          name: includeProperties
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include extended information about the organisations.
+      responses:
+        "200":
+          description: IOF XML 3.0 `OrganisationList`
+          content:
+            application/xml:
+              schema:
+                type: string
+                description: IOF XML 3.0 format — see IOF XSD for schema.
 
   /organisation/{id}:
     get:
@@ -4848,6 +5056,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResultList'
 
+  /wrsresults/event:
+    get:
+      summary: Returns results for a class of an event registered in the WRS (World Ranking System).
+      description: |
+        Only available on the International Eventor instance
+        (`eventor.orienteering.sport`).
+      parameters:
+        - in: query
+          name: classId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the event class as specified by `/eventclasses`.
+      responses:
+        "200":
+          description: XML element `ResultList`
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ResultList'
+
   /results/event/iofxml:
     get:
       summary: Returns results in IOF XML 3.0 format for an event.
@@ -5108,6 +5337,45 @@ paths:
                     <Name>Men Open</Name>
                   </Class>
                 </Competitor>
+
+  /memberships:
+    get:
+      summary: Returns the memberships of an organisation for a given year.
+      description: |
+        Only available on the Australian Eventor instance
+        (`eventor.orienteering.asn.au`).
+      parameters:
+        - in: query
+          name: organisationId
+          schema:
+            type: integer
+          required: true
+          description: The ID of the organisation as specified by `/organisations`. This parameter must be set to the own organisation's ID.
+        - in: query
+          name: year
+          schema:
+            type: integer
+          required: true
+          description: The year to include memberships for.
+        - in: query
+          name: includeChildOrganisations
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include memberships for any underlying organisations. Not applicable for clubs.
+        - in: query
+          name: includeContactDetails
+          schema:
+            type: boolean
+            default: false
+          description: Set to `true` to include the members' phone numbers and email addresses.
+      responses:
+        "200":
+          description: XML element `OrganisationMembershipList`
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrganisationMembershipList'
 
   /export/competitors:
     get:
