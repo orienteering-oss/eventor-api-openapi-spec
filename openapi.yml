@@ -4989,10 +4989,13 @@ paths:
         so this can significantly undercount participants. Use `/starts/event`
         for the full list of starters once a start list has been published.
 
-        Note that the Eventor web UI's *Entries* tab is updated when a result
-        list is uploaded and then shows every person in the result list
-        (including walk-ups and entries from other systems), so it can report a
-        higher count than this endpoint.
+        Before a start list or result list is uploaded, this endpoint and the
+        Eventor web UI's *Entries* tab hold the same data. Once a start list or
+        result list is uploaded, the UI tab is recalculated from it and then
+        shows every person present (including walk-ups and entries from other
+        systems), while this endpoint keeps returning only those who originally
+        registered through Eventor's online registration — so the UI can report
+        a higher count.
       parameters:
         - in: query
           name: organisationIds
