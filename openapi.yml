@@ -4982,6 +4982,20 @@ paths:
   /entries:
     get:
       summary: Returns persons entered to an event as specified by the search parameters.
+      description: |
+        Only returns entries booked through Eventor's online pre-registration
+        system. Walk-up / direct entries registered at the event itself (common
+        in open classes such as *N-åpen* / *C-åpen* / *A-åpen*) are not included,
+        so this can significantly undercount participants. Use `/starts/event`
+        for the full list of starters once a start list has been published.
+
+        Before a start list or result list is uploaded, this endpoint and the
+        Eventor web UI's *Entries* tab hold the same data. Once a start list or
+        result list is uploaded, the UI tab is recalculated from it and then
+        shows every person present (including walk-ups and entries from other
+        systems), while this endpoint keeps returning only those who originally
+        registered through Eventor's online registration — so the UI can report
+        a higher count.
       parameters:
         - in: query
           name: organisationIds
@@ -5103,6 +5117,11 @@ paths:
   /starts/event:
     get:
       summary: Returns start times for an event.
+      description: |
+        Returns every starter, including walk-up / direct entries that
+        `/entries` omits, and carries `<CCardId>` for each start. Empty until a
+        start list has been published — check `startListExists` on the event and
+        fall back to `/entries` before the draw.
       parameters:
         - in: query
           name: eventId
@@ -5122,6 +5141,11 @@ paths:
   /starts/event/iofxml:
     get:
       summary: Returns start times in IOF XML 3.0 format for an event.
+      description: |
+        Like `/starts/event`, returns every starter (including walk-ups) and is
+        empty until a start list has been published. Unlike the native variant,
+        this IOF XML variant omits `<ControlCard>` — use `/starts/event` if you
+        need control cards for walk-up starters.
       parameters:
         - in: query
           name: eventId
