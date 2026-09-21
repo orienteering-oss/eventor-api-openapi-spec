@@ -45,4 +45,3 @@ The IOF XML bodies follow the [IOF datastandard-v3 XSD](https://github.com/inter
 - Typed ReScript, JavaScript, and TypeScript client for the native Eventor and IOF XML endpoints: [mikaello/rescript-eventor](https://github.com/mikaello/rescript-eventor)
 - ReScript and TypeScript parser for IOF XML 3.0: [mikaello/rescript-iof-xml](https://github.com/mikaello/rescript-iof-xml)
 - GraphQL facade for the Eventor API: [mikaello/eventor-graphql-api](https://github.com/mikaello/eventor-graphql-api)
-- Caching CORS proxy for Eventor API responses: [mikaello/eventor-proxy](https://github.com/mikaello/eventor-proxy)
