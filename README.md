@@ -42,5 +42,6 @@ The IOF XML bodies follow the [IOF datastandard-v3 XSD](https://github.com/inter
 
 - All data returned from the API is specified in IOF XSD v3, see this and JSON version of the same spec in [orienteering-oss/iof-orienteering-data-schemas](https://github.com/orienteering-oss/iof-orienteering-data-schemas)
 - Java helper library for converting XML from Eventor to JSON objects (and back): [orienteering-oss/iof-xml](https://github.com/orienteering-oss/iof-xml)
-- WIP: JavaScript helper library for converting XML from Eventor to JSON objects: [mikaello/eventor-api-json-types](https://github.com/mikaello/eventor-api-json-types)
-- GraphQL version of the Eventor API: [mikaello/eventor-graphql-api](https://github.com/mikaello/eventor-graphql-api)
+- Typed ReScript, JavaScript, and TypeScript client for the native Eventor and IOF XML endpoints: [mikaello/rescript-eventor](https://github.com/mikaello/rescript-eventor)
+- ReScript and TypeScript parser for IOF XML 3.0: [mikaello/rescript-iof-xml](https://github.com/mikaello/rescript-iof-xml)
+- GraphQL facade for the Eventor API: [mikaello/eventor-graphql-api](https://github.com/mikaello/eventor-graphql-api)
