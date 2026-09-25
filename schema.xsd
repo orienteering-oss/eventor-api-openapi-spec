@@ -1534,6 +1534,7 @@
         <xs:element ref="ModifyDate" minOccurs="0" />
         <xs:element ref="ModifiedBy" minOccurs="0" />
         <xs:element ref="ChampionshipResults" minOccurs="0" />
+        <xs:element ref="KilometreTime" minOccurs="0" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -1607,6 +1608,9 @@
       <xs:attribute name="type" use="required" type="xs:anySimpleType" />
       <xs:attribute name="value" use="required" type="xs:anySimpleType" />
     </xs:complexType>
+  </xs:element>
+  <xs:element name="KilometreTime">
+    <xs:complexType mixed="true" />
   </xs:element>
   <xs:element name="ResultPosition">
     <xs:complexType mixed="true" />

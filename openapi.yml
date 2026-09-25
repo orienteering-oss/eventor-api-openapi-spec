@@ -2304,6 +2304,10 @@ components:
       type: string
       xml:
         name: Key
+    KilometreTime:
+      type: string
+      xml:
+        name: KilometreTime
     LiveEventInformationList:
       type: object
       properties:
@@ -3224,6 +3228,8 @@ components:
           $ref: '#/components/schemas/ModifiedBy'
         ChampionshipResults:
           $ref: '#/components/schemas/ChampionshipResults'
+        KilometreTime:
+          $ref: '#/components/schemas/KilometreTime'
       required:
         - CompetitorStatus
       xml:
@@ -4647,46 +4653,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: array
-                xml:
-                  name: DocumentList
-                  wrapped: true
-                items:
-                  xml:
-                    name: Document
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      xml:
-                        attribute: true
-                    referenceId:
-                      type: integer
-                      xml:
-                        attribute: true
-                    name:
-                      type: string
-                      xml:
-                        attribute: true
-                    url:
-                      type: string
-                      format: uri
-                      xml:
-                        attribute: true
-                    type:
-                      type: string
-                      enum:
-                        - Invitation
-                        - Other
-                        - Program
-                      xml:
-                        attribute: true
-                    modifyDate:
-                      type: string
-                      format: date-time
-                      xml:
-                        attribute: true
-                  additionalProperties: false
+                $ref: '#/components/schemas/DocumentList'
 
 
   /event/{eventId}:
