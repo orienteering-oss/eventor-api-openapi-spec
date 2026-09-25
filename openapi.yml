@@ -2304,6 +2304,10 @@ components:
       type: string
       xml:
         name: Key
+    KilometreTime:
+      type: string
+      xml:
+        name: KilometreTime
     LiveEventInformationList:
       type: object
       properties:
@@ -3224,6 +3228,8 @@ components:
           $ref: '#/components/schemas/ModifiedBy'
         ChampionshipResults:
           $ref: '#/components/schemas/ChampionshipResults'
+        KilometreTime:
+          $ref: '#/components/schemas/KilometreTime'
       required:
         - CompetitorStatus
       xml:
